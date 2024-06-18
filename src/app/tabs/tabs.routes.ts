@@ -1,5 +1,7 @@
 import { Routes } from '@angular/router';
 import { TabsPage } from './tabs.page';
+import { authGuard } from '../guards/auth.guard';
+import { authRedirectLoggedUsersGuard } from '../guards/auth-redirect-logged-users.guard';
 
 export const routes: Routes = [
   {
@@ -7,30 +9,45 @@ export const routes: Routes = [
     component: TabsPage,
     children: [
       {
-        path: 'tab1',
+        path: 'home',
         loadComponent: () =>
-          import('../tab1/tab1.page').then((m) => m.Tab1Page),
+          import('../pages/home/home.page').then((m) => m.HomePage),
+        canActivate: [authGuard],
       },
       {
         path: 'tab2',
         loadComponent: () =>
-          import('../tab2/tab2.page').then((m) => m.Tab2Page),
+          import('../pages/tab2/tab2.page').then((m) => m.Tab2Page),
+        canActivate: [authGuard],
       },
       {
         path: 'tab3',
         loadComponent: () =>
-          import('../tab3/tab3.page').then((m) => m.Tab3Page),
+          import('../pages/tab3/tab3.page').then((m) => m.Tab3Page),
+        canActivate: [authGuard],
       },
       {
         path: '',
-        redirectTo: '/tabs/tab1',
+        redirectTo: '/tabs/home',
         pathMatch: 'full',
       },
     ],
   },
   {
+    path: 'signin',
+    loadComponent: () =>
+      import('../pages/sign-in/sign-in.component').then((m) => m.SignInComponent),
+    canActivate: [authRedirectLoggedUsersGuard],
+  },
+  {
+    path: 'signup',
+    loadComponent: () =>
+      import('../pages/sign-up/sign-up.component').then((m) => m.SignUpComponent),
+    canActivate: [authRedirectLoggedUsersGuard],
+  },
+  {
     path: '',
-    redirectTo: '/tabs/tab1',
+    redirectTo: '/tabs/home',
     pathMatch: 'full',
   },
 ];

@@ -1,0 +1,40 @@
+<app-header
+  color="dark"
+  [centerTitle]="false"
+  [isModal]="false"
+  title="Sign Up"
+></app-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="sign-in-container">
+    <ion-card class="sign-in-card">
+      <ion-card-header>
+        <ion-card-title>Welcome Back!</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-item>
+          <ion-label position="floating">Email</ion-label>
+          <ion-input type="email" ></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Username</ion-label>
+          <ion-input type="text" ></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Password</ion-label>
+          <ion-input type="password"></ion-input>
+        </ion-item>
+
+        <ion-button expand="block" (click)="signUp()">Sign Up</ion-button>
+
+        <div class="links">
+          <a routerLink="/forgot-password">Forgot Password?</a>
+          <a routerLink="/signin">Have an account? Sign In</a>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
