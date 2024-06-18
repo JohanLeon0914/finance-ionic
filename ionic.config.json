@@ -1,0 +1,7 @@
+{
+  "name": "finance-ionic",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
