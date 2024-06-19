@@ -36,9 +36,31 @@ export class WalletService {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
-
-
     return this.http.post<any>(`${this.apiUrl}/wallet`, wallet, { headers });
+  }
+
+  updateWallet(wallet: Wallet): Observable<any> {
+    const token = this.authService.getAuthToken();
+    if (!token) {
+      throw new Error('No auth token available');
+    }
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.patch<any>(`${this.apiUrl}/wallet/${wallet.id}`, {name: wallet.name, description: wallet.description}, { headers });
+  }
+
+  deleteWallet(wallet: Wallet): Observable<any> {
+    const token = this.authService.getAuthToken();
+    if (!token) {
+      throw new Error('No auth token available');
+    }
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.delete<any>(`${this.apiUrl}/wallet/${wallet.id}`, { headers });
   }
 
 }
