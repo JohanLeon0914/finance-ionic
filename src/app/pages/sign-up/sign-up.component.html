@@ -32,6 +32,32 @@
           <ion-text color="danger"> Invalid email format. </ion-text>
           } }
 
+           <!-- Confirm Email Field -->
+           <ion-item>
+            <ion-label position="floating">Confirm Email</ion-label>
+            <ion-input
+              [(ngModel)]="confirmEmail"
+              name="confirmEmail"
+              type="email"
+              required
+              email
+              #confirmEmailCtrl="ngModel"
+            ></ion-input>
+          </ion-item>
+          @if (confirmEmailCtrl.invalid && (confirmEmailCtrl.dirty || confirmEmailCtrl.touched)) {
+            @if (confirmEmailCtrl.errors?.['required']) {
+              <ion-text color="danger">Confirm Email is required.</ion-text>
+            }
+            @if (confirmEmailCtrl.errors?.['email']) {
+              <ion-text color="danger">Invalid email format.</ion-text>
+            }
+          }
+
+          <!-- Emails Match Validation -->
+          @if (email !== confirmEmail && (emailCtrl.dirty || confirmEmailCtrl.dirty)) {
+            <ion-text color="danger">Emails do not match.</ion-text>
+          }
+
           <ion-item>
             <ion-label position="floating">Username</ion-label>
             <ion-input

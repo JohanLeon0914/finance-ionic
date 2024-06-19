@@ -17,6 +17,7 @@ import { cloudyNight } from 'ionicons/icons';
 })
 export class SignUpComponent implements OnInit {
   email: string = "";
+  confirmEmail: string = "";
   name: string = "";
   password: string = "";
   authService = inject(AuthService)
@@ -44,11 +45,11 @@ export class SignUpComponent implements OnInit {
       response => {
         this.utilsSvc.dismissLoading();
         this.utilsSvc.presentToast({
-          message: 'Sign Up Success',
+          message: 'Sign up success, we send you a verification email',
           color: 'success',
           position: 'bottom',
           icon: 'checkmark-circle-outline',
-          duration: 2000,
+          duration: 5000,
         });
         form.resetForm(); 
         this.router.navigate(['/signin']);
