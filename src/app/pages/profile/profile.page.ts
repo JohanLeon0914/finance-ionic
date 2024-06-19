@@ -17,6 +17,26 @@ export class ProfilePage {
   utilsSvc = inject(UtilService)
   router = inject(Router);
   constructor() {}
+
+  confirmLogout(): void {
+    this.utilsSvc.presentAlert({
+      header: 'Logout!',
+      message: 'Are you sure you want to logout?',
+      mode: 'ios',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+        },
+        {
+          text: 'Yes, logout',
+          handler: () => {
+            this.logout()
+          },
+        },
+      ],
+    })
+  }
   logout() {
     this.authService.logout();
     this.router.navigate(['/signin']);

@@ -47,7 +47,7 @@ export class SignInComponent implements OnInit {
         this.utilsSvc.presentToast({
           message: 'Sign In Success',
           color: 'success',
-          position: 'bottom',
+          position: 'top',
           icon: 'checkmark-circle-outline',
           duration: 2000,
         });
