@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Credentials } from 'src/models/credentials.model';
 import { User } from 'src/models/users.model';
@@ -11,8 +11,10 @@ import { User } from 'src/models/users.model';
 export class AuthService {
   private token: string | null = '';
   private apiUrl = 'http://localhost:3000/api/v1';
+  private http = inject(HttpClient)
+  _refresh$ = new Subject<void>();
 
-  constructor(private http: HttpClient) { 
+  constructor() { 
     this.token = localStorage.getItem('authToken');
   }
 
@@ -32,9 +34,9 @@ export class AuthService {
 
     return this.http.post<any>(url, credentials, { headers }).pipe(
       tap(response => {
-        localStorage.setItem('authToken', response.data.token);
         if (response && response.data.token) {
           this.token = response.data.token;
+          this._refresh$.next()
           localStorage.setItem('authToken', this.token);
         }
       })

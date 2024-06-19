@@ -1,18 +1,16 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, AlertOptions, LoadingController, LoadingOptions, ModalController, ModalOptions, ToastController, ToastOptions } from '@ionic/angular';
+import { AlertController, AlertOptions, LoadingController, LoadingOptions, ModalOptions, ToastController, ToastOptions } from '@ionic/angular';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'any'
 })
 export class UtilService {
-
   constructor(
     private loadingController: LoadingController,
     private router: Router,
     private toastController: ToastController,
     private alertController: AlertController,
-    // private modalController: ModalController,
   ) {
    }
 
@@ -50,25 +48,6 @@ export class UtilService {
   async presentAlert(opts: AlertOptions) {
     const alert = await this.alertController.create(opts);
     await alert.present();
-  }
-
-  //modal
-  // async presentModal(opts: ModalOptions) {
-  //   const modal = await this.modalController.create(opts);
-  //   await modal.present();
-  //   //la data que puede que devuelva el modal al cerrarse
-  //   const { data } = await modal.onWillDismiss();
-  //   if(data) {
-  //     return data;
-  //   }
-  // }
-  // //si cierras la modal y quieras devolver una data, se pasa atraves de esta funcion
-  // dismissModal(data?: any){
-  //   this.modalController.dismiss(data);
-  // }
-
-  get windowRef() { 
-    return window 
   }
 
 }

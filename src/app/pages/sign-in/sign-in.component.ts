@@ -5,6 +5,8 @@ import { Router, RouterLink } from '@angular/router';
 import { UtilService } from 'src/app/services/utils.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { FormsModule, NgForm, ReactiveFormsModule } from '@angular/forms';
+import { addIcons } from 'ionicons';
+import { alertCircleOutline, checkmarkCircleOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-sign-in',
@@ -21,7 +23,9 @@ export class SignInComponent implements OnInit {
   password: string = "";
   private router = inject(Router);
 
-  constructor() { }
+  constructor() { 
+    addIcons({checkmarkCircleOutline, alertCircleOutline})
+  }
 
   ngOnInit() { }
 
@@ -48,7 +52,7 @@ export class SignInComponent implements OnInit {
           duration: 2000,
         });
         form.resetForm(); 
-        this.router.navigate(['/tabs/home']);
+        this.router.navigateByUrl('/tabs/home')
       },
       error => {
         this.utilsSvc.dismissLoading();
