@@ -13,18 +13,44 @@
       </ion-card-header>
 
       <ion-card-content>
-        <form (ngSubmit)="signIn()">
+        <form #signInForm="ngForm" (ngSubmit)="onSubmit(signInForm)">
           <ion-item>
             <ion-label position="floating">Email</ion-label>
-            <ion-input type="email" [(ngModel)]="email" name="email" required></ion-input>
+            <ion-input
+              type="email"
+              [(ngModel)]="email"
+              name="email"
+              required
+              email
+              #emailCtrl="ngModel"
+            ></ion-input>
           </ion-item>
+          @if (emailCtrl.invalid && (emailCtrl.dirty || emailCtrl.touched)) {
+            @if (emailCtrl.errors?.['required']) {
+              <ion-text color="danger">Email is required.</ion-text>
+            }
+            @if (emailCtrl.errors?.['email']) {
+              <ion-text color="danger">Invalid email format.</ion-text>
+            }
+          }
 
           <ion-item>
             <ion-label position="floating">Password</ion-label>
-            <ion-input type="password" [(ngModel)]="password" name="password" required></ion-input>
+            <ion-input
+              type="password"
+              [(ngModel)]="password"
+              name="password"
+              required
+              #passwordCtrl="ngModel"
+            ></ion-input>
           </ion-item>
 
-          <ion-button expand="block" type="submit">Sign In</ion-button>
+          <ion-button
+            expand="block"
+            type="submit"
+            [disabled]="signInForm.invalid"
+            >Sign In</ion-button
+          >
         </form>
 
         <div class="links">

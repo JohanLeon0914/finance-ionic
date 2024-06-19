@@ -1,17 +1,17 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonCard, IonCardHeader, IonCardTitle, IonLabel, IonCardContent, IonItem, IonInput, IonButton } from '@ionic/angular/standalone';
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonCard, IonCardHeader, IonCardTitle, IonLabel, IonCardContent, IonItem, IonInput, IonButton, IonText } from '@ionic/angular/standalone';
 import { HeaderComponent } from 'src/app/shared/components/header/header.component';
 import { Router, RouterLink } from '@angular/router';
 import { UtilService } from 'src/app/services/utils.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-sign-in',
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.scss'],
   standalone: true,
-  imports: [FormsModule, RouterLink, IonLabel, IonCardHeader, IonHeader, IonToolbar, IonTitle, IonContent, HeaderComponent, IonCard, IonCardTitle, IonLabel, IonCardContent, IonItem, IonInput, IonButton]
+  imports: [ReactiveFormsModule, FormsModule, RouterLink, IonLabel, IonText, IonCardHeader, IonHeader, IonToolbar, IonTitle, IonContent, HeaderComponent, IonCard, IonCardTitle, IonLabel, IonCardContent, IonItem, IonInput, IonButton]
 })
 export class SignInComponent implements OnInit {
 
@@ -25,31 +25,41 @@ export class SignInComponent implements OnInit {
 
   ngOnInit() { }
 
-  signIn() {
+  onSubmit(form: NgForm) {
+    if (form.invalid) {
+      return;
+    }
+
     this.utilsSvc.presentLoading();
-    this.authSvc.getAuthenticate({ email: this.email, password: this.password }).subscribe(
+
+    const credentials = {
+      email: this.email,
+      password: this.password
+    };
+
+    this.authSvc.getAuthenticate(credentials).subscribe(
       response => {
-        console.log(response)
         this.utilsSvc.dismissLoading();
         this.utilsSvc.presentToast({
-          message: 'Welcome',
+          message: 'Sign In Success',
           color: 'success',
           position: 'bottom',
           icon: 'checkmark-circle-outline',
           duration: 2000,
         });
+        form.resetForm(); 
         this.router.navigate(['/tabs/home']);
       },
       error => {
-        console.log(error)
         this.utilsSvc.dismissLoading();
         this.utilsSvc.presentToast({
-          message: `Error: ${error}`,        
-          color: 'warning',
-          position: 'top',
+          message: 'Sign In Failed',
+          color: 'danger',
+          position: 'bottom',
           icon: 'alert-circle-outline',
           duration: 2000,
         });
+        console.error('Authentication failed', error);
       }
     );
   }

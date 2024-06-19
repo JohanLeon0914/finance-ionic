@@ -9,26 +9,81 @@
   <div class="sign-in-container">
     <ion-card class="sign-in-card">
       <ion-card-header>
-        <ion-card-title>Welcome Back!</ion-card-title>
+        <ion-card-title>Sign Up</ion-card-title>
       </ion-card-header>
 
       <ion-card-content>
-        <ion-item>
-          <ion-label position="floating">Email</ion-label>
-          <ion-input type="email" ></ion-input>
-        </ion-item>
+        <form #signUpForm="ngForm" (ngSubmit)="onSubmit(signUpForm)">
+          <ion-item>
+            <ion-label position="floating">Email</ion-label>
+            <ion-input
+              [(ngModel)]="email"
+              name="email"
+              type="email"
+              required
+              email
+              #emailCtrl="ngModel"
+            ></ion-input>
+          </ion-item>
+          @if (emailCtrl.invalid && (emailCtrl.dirty || emailCtrl.touched)) {
+          @if (emailCtrl.errors?.['required']) {
+          <ion-text color="danger" > Email is required. </ion-text>
+          } @if (emailCtrl.errors?.['email']) {
+          <ion-text color="danger"> Invalid email format. </ion-text>
+          } }
 
-        <ion-item>
-          <ion-label position="floating">Username</ion-label>
-          <ion-input type="text" ></ion-input>
-        </ion-item>
+          <ion-item>
+            <ion-label position="floating">Username</ion-label>
+            <ion-input
+              [(ngModel)]="name"
+              name="name"
+              type="text"
+              required
+              minlength="3"
+              #nameCtrl="ngModel"
+            ></ion-input>
+          </ion-item>
+          @if (nameCtrl.invalid && (nameCtrl.dirty || nameCtrl.touched)) { @if
+          (nameCtrl.errors?.['required']) {
+          <ion-text color="danger"> Username is required. </ion-text>
+          } @if (nameCtrl.errors?.['minlength']) {
+          <ion-text color="danger">
+            Username must be at least 3 characters long.
+          </ion-text>
+          } }
 
-        <ion-item>
-          <ion-label position="floating">Password</ion-label>
-          <ion-input type="password"></ion-input>
-        </ion-item>
+          <ion-item>
+            <ion-label position="floating">Password</ion-label>
+            <ion-input
+              [(ngModel)]="password"
+              name="password"
+              type="password"
+              required
+              minlength="5"
+              #passwordCtrl="ngModel"
+            ></ion-input>
+          </ion-item>
+          @if (passwordCtrl.invalid &&
+          (passwordCtrl.dirty || passwordCtrl.touched)) {
+            @if (passwordCtrl.errors?.['required']) {
+              <ion-text color="danger">
+                Password is required.
+              </ion-text>
+            }
+            @if (passwordCtrl.errors?.['minlength']) {
+              <ion-text color="danger">
+                Password must be at least 5 characters long.
+              </ion-text>
+            }
+          }
 
-        <ion-button expand="block" (click)="signUp()">Sign Up</ion-button>
+          <ion-button
+            expand="block"
+            [disabled]="signUpForm.invalid"
+            type="submit"
+            >Sign Up</ion-button
+          >
+        </form>
 
         <div class="links">
           <a routerLink="/forgot-password">Forgot Password?</a>

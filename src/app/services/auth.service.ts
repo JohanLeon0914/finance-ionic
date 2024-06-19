@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { Credentials } from 'src/models/credentials';
+import { Credentials } from 'src/models/credentials.model';
+import { User } from 'src/models/users.model';
 
 @Injectable({
   providedIn: 'root'
@@ -34,15 +35,28 @@ export class AuthService {
         localStorage.setItem('authToken', response.data.token);
         if (response && response.data.token) {
           this.token = response.data.token;
-          console.log(this.token)
           localStorage.setItem('authToken', this.token);
         }
       })
     );
   }
 
+  signUp(user: User): Observable<any> {
+    const url = `${this.apiUrl}/auth/register`;
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+
+    return this.http.post<any>(url, user, { headers }).pipe(
+      tap(response => {
+        if (response.status === 201) {
+        }
+      })
+    );
+  }
+
   logout() {
-    this.token = null;
+    this.token = '';
     localStorage.removeItem('authToken');
   }
 }
