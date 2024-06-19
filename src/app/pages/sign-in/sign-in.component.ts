@@ -52,7 +52,7 @@ export class SignInComponent implements OnInit {
           duration: 2000,
         });
         form.resetForm(); 
-        this.router.navigateByUrl('/tabs/home')
+        this.router.navigateByUrl('/tabs/wallets')
       },
       error => {
         this.utilsSvc.dismissLoading();

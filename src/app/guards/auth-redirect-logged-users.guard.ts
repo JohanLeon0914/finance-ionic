@@ -7,7 +7,7 @@ export const authRedirectLoggedUsersGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
   
   if (AuthSvc.isAuthenticated()) {
-    router.navigate(['/tabs/home']);
+    router.navigate(['/tabs/wallets']);
     return false;
   }
   return true;

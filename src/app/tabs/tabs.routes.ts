@@ -9,26 +9,26 @@ export const routes: Routes = [
     component: TabsPage,
     children: [
       {
-        path: 'home',
+        path: 'wallets',
         loadComponent: () =>
-          import('../pages/home/home.page').then((m) => m.HomePage),
+          import('../pages/wallets/wallets.page').then((m) => m.WalletsPage),
         canActivate: [authGuard],
       },
       {
-        path: 'tab2',
+        path: 'transactions',
         loadComponent: () =>
-          import('../pages/tab2/tab2.page').then((m) => m.Tab2Page),
+          import('../pages/transactions/transactions.page').then((m) => m.TransactionsPage),
         canActivate: [authGuard],
       },
       {
-        path: 'tab3',
+        path: 'profile',
         loadComponent: () =>
-          import('../pages/tab3/tab3.page').then((m) => m.Tab3Page),
+          import('../pages/profile/profile.page').then((m) => m.ProfilePage),
         canActivate: [authGuard],
       },
       {
         path: '',
-        redirectTo: '/tabs/home',
+        redirectTo: '/tabs/wallets',
         pathMatch: 'full',
       },
     ],
@@ -47,7 +47,7 @@ export const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: '/tabs/home',
+    redirectTo: '/tabs/wallets',
     pathMatch: 'full',
   },
 ];

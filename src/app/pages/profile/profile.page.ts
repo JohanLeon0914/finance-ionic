@@ -6,13 +6,13 @@ import { UtilService } from 'src/app/services/utils.service';
 import { HeaderComponent } from 'src/app/shared/components/header/header.component';
 
 @Component({
-  selector: 'app-tab3',
-  templateUrl: 'tab3.page.html',
-  styleUrls: ['tab3.page.scss'],
+  selector: 'app-profile',
+  templateUrl: 'profile.page.html',
+  styleUrls: ['profile.page.scss'],
   standalone: true,
   imports: [IonHeader, IonToolbar, IonTitle, IonContent, HeaderComponent, IonButton],
 })
-export class Tab3Page {
+export class ProfilePage {
   authService = inject(AuthService)
   utilsSvc = inject(UtilService)
   router = inject(Router);

@@ -12,13 +12,13 @@ import { UtilService } from 'src/app/services/utils.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss'],
+  selector: 'app-wallets',
+  templateUrl: 'wallets.page.html',
+  styleUrls: ['wallets.page.scss'],
   standalone: true,
   imports: [FormsModule, ReactiveFormsModule, IonInput, IonButtons, IonModal, IonCardContent, IonIcon, IonHeader, IonToolbar, IonTitle, IonContent, HeaderComponent, IonButton, IonCard, IonCardHeader, IonCardTitle, IonList, IonItem, IonLabel],
 })
-export class HomePage {
+export class WalletsPage {
   @ViewChild(IonModal) modal: IonModal;
   authService = inject(AuthService)
   utilsSvc = inject(UtilService)
