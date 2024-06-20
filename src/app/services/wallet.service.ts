@@ -42,7 +42,7 @@ export class WalletService {
   updateWallet(wallet: Wallet): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.http.patch<any>(`${this.apiUrl}/wallet/${wallet.id}`, 
-      { name: wallet.name, description: wallet.description }, 
+      { name: wallet.name, description: wallet.description, balance: wallet.balance	}, 
       { headers });
   }
 

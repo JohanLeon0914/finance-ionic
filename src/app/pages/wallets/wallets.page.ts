@@ -27,6 +27,7 @@ export class WalletsPage {
   walletService = inject(WalletService)
   userWallets: Wallet[] = [];
   walletName: string = '';
+  walletBalance: number = 0;
   walletSelected: Wallet | null = null;
   walletDescription: string = '';
 
@@ -65,14 +66,15 @@ export class WalletsPage {
           id: this.walletSelected.id,
           name: this.walletName,
           description: this.walletDescription,
+          balance: this.walletBalance,
         }
         this.walletService.updateWallet(wallet).subscribe(
           () => {
             this.utilsSvc.dismissLoading();
             this.utilsSvc.presentToast({
-              message: 'Wallet Created Success',
+              message: 'Wallet Updated Success',
               color: 'success',
-              position: 'bottom',
+              position: 'top',
               icon: 'checkmark-circle-outline',
               duration: 2000,
             });
@@ -96,6 +98,7 @@ export class WalletsPage {
         const wallet: Wallet = {
           name: this.walletName,
           description: this.walletDescription,
+          balance: this.walletBalance
         }
         this.walletService.createWallet(wallet).subscribe(
           () => {
@@ -103,7 +106,7 @@ export class WalletsPage {
             this.utilsSvc.presentToast({
               message: 'Wallet Created Success',
               color: 'success',
-              position: 'bottom',
+              position: 'top',
               icon: 'checkmark-circle-outline',
               duration: 2000,
             });
@@ -131,6 +134,7 @@ export class WalletsPage {
     this.walletSelected = wallet;
     this.walletName = wallet.name;
     this.walletDescription = wallet.description;
+    this.walletBalance = wallet.balance;
     this.modal.present();
   }
 
@@ -162,7 +166,7 @@ export class WalletsPage {
         this.utilsSvc.presentToast({
           message: 'Wallet Deleted Success',
           color:'success',
-          position: 'bottom',
+          position: 'top',
           icon: 'checkmark-circle-outline',
           duration: 2000,
         });
@@ -180,6 +184,15 @@ export class WalletsPage {
         console.log(error)
       }
     )
+  }
+
+  currencyFormatter(value) {
+    const formatter = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      minimumFractionDigits: 2,
+      currency: 'USD'
+    }) 
+    return formatter.format(value)
   }
 
   cancel() {

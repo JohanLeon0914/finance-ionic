@@ -21,6 +21,7 @@
     <ion-item>
       <ion-label>
         <h2>{{ wallet.name }}</h2>
+        <h3>{{ currencyFormatter(wallet.balance) }}</h3>
         <p>{{ wallet.description }}</p>
       </ion-label>
       <ion-button (click)="editWallet(wallet)" expand="block" color="success">
@@ -76,6 +77,16 @@
               type="text"
               placeholder="Wallet description..."
               [(ngModel)]="walletDescription"
+              required
+            ></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Enter your balance</ion-label>
+            <ion-input
+              name="walletBalance"
+              type="number"
+              placeholder="Balance..."
+              [(ngModel)]="walletBalance"
               required
             ></ion-input>
           </ion-item>
