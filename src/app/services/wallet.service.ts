@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { AuthService } from './auth.service';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { Wallet } from 'src/models/wallet.model';
 import { Transaction } from 'src/models/transaction.model';
 
@@ -36,19 +36,37 @@ export class WalletService {
 
   createWallet(wallet: Wallet): Observable<any> {
     const headers = this.getAuthHeaders();
-    return this.http.post<any>(`${this.apiUrl}/wallet`, wallet, { headers });
+    return this.http.post<any>(`${this.apiUrl}/wallet`, wallet, { headers }).pipe(
+      tap(response => {
+        if (response) {
+          this.authService._refresh$.next()
+        }
+      })
+    );
   }
 
   updateWallet(wallet: Wallet): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.http.patch<any>(`${this.apiUrl}/wallet/${wallet.id}`, 
       { name: wallet.name, description: wallet.description, balance: wallet.balance	}, 
-      { headers });
+      { headers }).pipe(
+        tap(response => {
+          if (response) {
+            this.authService._refresh$.next()
+          }
+        })
+      );
   }
 
   deleteWallet(wallet: Wallet): Observable<any> {
     const headers = this.getAuthHeaders();
-    return this.http.delete<any>(`${this.apiUrl}/wallet/${wallet.id}`, { headers });
+    return this.http.delete<any>(`${this.apiUrl}/wallet/${wallet.id}`, { headers }).pipe(
+      tap(response => {
+        if (response) {
+          this.authService._refresh$.next()
+        }
+      })
+    );
   }
 
   // TRANSACTIONS
@@ -60,8 +78,39 @@ export class WalletService {
 
   createTransaction(transaction: Transaction): Observable<any> {
     const headers = this.getAuthHeaders();
-    return this.http.post<any>(`${this.apiUrl}/transaction`, transaction, { headers });
+    this.authService._refresh$.next()
+    return this.http.post<any>(`${this.apiUrl}/transaction`, transaction, { headers }).pipe(
+      tap(response => {
+        if (response) {
+          this.authService._refresh$.next()
+        }
+      })
+    );
   }
+
+  updateTransaction(transaction: Transaction): Observable<any> {
+    const headers = this.getAuthHeaders();
+    this.authService._refresh$.next()
+    return this.http.patch<any>(`${this.apiUrl}/transaction`, transaction, { headers }).pipe(
+      tap(response => {
+        if (response) {
+          this.authService._refresh$.next()
+        }
+      })
+    );
+  }
+
+  deleteTransaction(transaction: Transaction): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.delete<any>(`${this.apiUrl}/transaction/${transaction.id}`, { headers }).pipe(
+      tap(response => {
+        if (response) {
+          this.authService._refresh$.next()
+        }
+      })
+    );;
+  }
+
 
   getTransactionCategories(): Observable<any> {
     const headers = this.getAuthHeaders();

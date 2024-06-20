@@ -186,7 +186,7 @@ export class WalletsPage {
     )
   }
 
-  currencyFormatter(value) {
+  currencyFormatter(value: number) {
     const formatter = new Intl.NumberFormat('en-US', {
       style: 'currency',
       minimumFractionDigits: 2,
@@ -196,11 +196,10 @@ export class WalletsPage {
   }
 
   cancel() {
-    if (this.walletSelected) {
       this.walletName = '';
       this.walletDescription = '';
+      this.walletBalance = 0;
       this.walletSelected = null;
-    }
     this.modal.dismiss(null, 'cancel');
   }
 

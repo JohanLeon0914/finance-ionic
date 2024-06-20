@@ -39,6 +39,7 @@ export class TransactionsPage {
   transactionType: string = '';
   repeat: string = '';
   transactionCategoryIdSelected: number | null = 0;
+  transactionSelected: Transaction | null = null;
   repeatOptions: string[] = [
     "NEVER",
     "EVERY DAY",
@@ -101,67 +102,165 @@ export class TransactionsPage {
     )
   }
 
-
-  onWalletChange(event: any) {
-
+  currencyFormatter(value: number) {
+    const formatter = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      minimumFractionDigits: 2,
+      currency: 'USD'
+    }) 
+    return formatter.format(value)
   }
 
   editTransaction(transaction: Transaction) {
-
+    this.transactionAmount = transaction.amount;
+    this.transactionSelected = transaction;
+    this.idWalletSelected = transaction.walletId;
+    this.transactionDescription = transaction.description;
+    this.transactionType = transaction.type;
+    this.repeat = transaction.repeat;
+    this.transactionCategoryIdSelected = transaction.categoryId;
+    this.transactionDate = transaction.date;
+    this.modal.present();
   }
 
   confirmDeleteTransaction(transaction: Transaction) {
+    this.utilsSvc.presentAlert({
+      header: 'Delete transaction!',
+      message: 'Are you sure you want to delete this transaction?',
+      mode: 'ios',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+        },
+        {
+          text: 'Yes, delete it',
+          handler: () => {
+            this.deleteTransaction(transaction)
+          },
+        },
+      ],
+    })
+  }
 
+  deleteTransaction(transaction: Transaction) {
+    this.utilsSvc.presentLoading();
+    this.walletService.deleteTransaction(transaction).subscribe(
+      () => {
+        this.utilsSvc.dismissLoading();
+        this.utilsSvc.presentToast({
+          message: 'Transaction Deleted Success',
+          color:'success',
+          position: 'top',
+          icon: 'checkmark-circle-outline',
+          duration: 2000,
+        });
+        this.getUserWallets();
+      },
+      error => {
+        this.utilsSvc.dismissLoading();
+        this.utilsSvc.presentToast({
+          message: `Error: ${error}`,
+          color: 'warning',
+          position: 'top',
+          icon: 'alert-circle-outline',
+          duration: 2000,
+        });
+        console.log(error)
+      }
+    )
   }
 
   onSubmit(form: NgForm) {
     if (form.valid) {
-      const transaction: Transaction = {
-        date: this.transactionDate,
-        amount: this.transactionAmount,
-        type: this.transactionType,
-        repeat: this.repeat,
-        walletId: this.idWalletSelected,
-        categoryId: this.transactionCategoryIdSelected,
-        active: true,
-        description: this.transactionDescription,
-      }
-      console.log(transaction)
-      this.walletService.createTransaction(transaction).subscribe(
-        () => {
-          this.utilsSvc.dismissLoading();
-          this.utilsSvc.presentToast({
-            message: 'Wallet Created Success',
-            color: 'success',
-            position: 'bottom',
-            icon: 'checkmark-circle-outline',
-            duration: 2000,
-          });
-          form.resetForm();
-          this.getUserWallets();
-          this.modal.dismiss();
-        },
-        error => {
-          this.utilsSvc.dismissLoading();
-          this.utilsSvc.presentToast({
-            message: `Error: ${error}`,
-            color: 'warning',
-            position: 'top',
-            icon: 'alert-circle-outline',
-            duration: 2000,
-          });
-          console.log(error)
+      if(this.transactionSelected) {
+        const transaction: Transaction = {
+          date: this.transactionDate,
+          amount: this.transactionAmount,
+          type: this.transactionType,
+          repeat: this.repeat,
+          walletId: this.idWalletSelected,
+          categoryId: this.transactionCategoryIdSelected,
+          active: true,
+          description: this.transactionDescription,
+        } 
+        console.log(transaction)
+        this.walletService.createTransaction(transaction).subscribe(
+          () => {
+            this.utilsSvc.dismissLoading();
+            this.utilsSvc.presentToast({
+              message: 'Transaction Updated Success',
+              color: 'success',
+              position: 'top',
+              icon: 'checkmark-circle-outline',
+              duration: 2000,
+            });
+            form.resetForm();
+            this.getUserTransactions();
+            this.modal.dismiss();
+          },
+          error => {
+            this.utilsSvc.dismissLoading();
+            this.utilsSvc.presentToast({
+              message: `Error: ${error}`,
+              color: 'warning',
+              position: 'top',
+              icon: 'alert-circle-outline',
+              duration: 2000,
+            });
+            console.log(error)
+          }
+        )
+      } else {
+        const transaction: Transaction = {
+          date: this.transactionDate,
+          amount: this.transactionAmount,
+          type: this.transactionType,
+          repeat: this.repeat,
+          walletId: this.idWalletSelected,
+          categoryId: this.transactionCategoryIdSelected,
+          active: true,
+          description: this.transactionDescription,
         }
-      )
+        this.walletService.createTransaction(transaction).subscribe(
+          () => {
+            this.utilsSvc.dismissLoading();
+            this.utilsSvc.presentToast({
+              message: 'Transaction Created Success',
+              color: 'success',
+              position: 'top',
+              icon: 'checkmark-circle-outline',
+              duration: 2000,
+            });
+            form.resetForm();
+            this.getUserTransactions();
+            this.modal.dismiss();
+          },
+          error => {
+            this.utilsSvc.dismissLoading();
+            this.utilsSvc.presentToast({
+              message: `Error: ${error}`,
+              color: 'warning',
+              position: 'top',
+              icon: 'alert-circle-outline',
+              duration: 2000,
+            });
+            console.log(error)
+          }
+        )
+      }
     }
   }
 
   cancel() {
-    // if (this.walletSelected) {
-    //   this.walletName = '';
-    //   this.walletDescription = '';
-    //   this.walletSelected = null;
-    // }
+      this.transactionAmount = 0;
+      this.transactionDescription = '';
+      this.transactionType = '';
+      this.repeat = '';
+      this.transactionCategoryIdSelected = 0;
+      this.transactionDate = new Date();
+      this.idWalletSelected = null;
+      this.transactionSelected = null;
     this.modal.dismiss(null, 'cancel');
   }
 

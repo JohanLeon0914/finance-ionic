@@ -21,8 +21,8 @@
         @for (transaction of transactions; track $index) {
           <ion-item>
             <ion-label>
-              <h2>{{ transaction.date }}</h2>
-              <p>{{ transaction.amount }}</p>
+              <h2>{{ transaction.description }}</h2>
+              <p>{{ currencyFormatter(transaction.amount) }}</p>
             </ion-label>
             <ion-button (click)="editTransaction(transaction)" expand="block" color="success">
               <ion-icon name="pencil-outline"></ion-icon>
@@ -46,17 +46,16 @@
       <ng-template>
         <ion-header>
           <ion-toolbar>
-            <ion-title>Transaction</ion-title>
             <ion-buttons slot="end">
               <ion-button (click)="cancel()">
                 <ion-icon name="close-circle-outline"></ion-icon>
               </ion-button>
             </ion-buttons>
-            <!-- @if (walletSelected) {
-            <ion-title>Update a wallet</ion-title>
+            @if (transactionSelected) {
+            <ion-title>Update a transaction</ion-title>
             } @else {
-            <ion-title>Create a wallet</ion-title>
-            } -->
+            <ion-title>Create a transaction</ion-title>
+            }
           </ion-toolbar>
         </ion-header>
         <ion-content class="ion-padding">
@@ -161,7 +160,7 @@
               
                   <!-- Submit Button -->
                   <ion-button expand="block" type="submit" [disabled]="transactionForm.invalid">
-                    Create
+                    @if (transactionSelected) { Update } @else { Create }
                   </ion-button>
                 </form>
               </ion-list>
