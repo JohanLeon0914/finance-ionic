@@ -174,83 +174,53 @@ export class TransactionsPage {
 
   onSubmit(form: NgForm) {
     if (form.valid) {
-      this.utilsSvc.presentLoading();
+      const transaction: Transaction = {
+        date: this.transactionDate,
+        amount: this.transactionAmount,
+        type: this.transactionType,
+        repeat: this.repeat,
+        walletId: this.idWalletSelected,
+        categoryId: this.transactionCategoryIdSelected,
+        active: true,
+        description: this.transactionDescription,
+      } 
       if(this.transactionSelected) {
-        const transaction: Transaction = {
-          date: this.transactionDate,
-          amount: this.transactionAmount,
-          type: this.transactionType,
-          repeat: this.repeat,
-          walletId: this.idWalletSelected,
-          categoryId: this.transactionCategoryIdSelected,
-          active: true,
-          description: this.transactionDescription,
-        } 
-        this.walletService.createTransaction(transaction).subscribe(
-          () => {
-            this.utilsSvc.dismissLoading();
-            this.utilsSvc.presentToast({
-              message: 'Transaction Updated Success',
-              color: 'success',
-              position: 'top',
-              icon: 'checkmark-circle-outline',
-              duration: 2000,
-            });
-            form.resetForm();
-            this.getUserTransactions();
-            this.modal.dismiss();
-          },
-          error => {
-            this.utilsSvc.dismissLoading();
-            this.utilsSvc.presentToast({
-              message: `Error: ${error}`,
-              color: 'warning',
-              position: 'top',
-              icon: 'alert-circle-outline',
-              duration: 2000,
-            });
-            console.log(error)
-          }
-        )
+        this.createOrUpdateTransaction(transaction, false, form);
       } else {
-        const transaction: Transaction = {
-          date: this.transactionDate,
-          amount: this.transactionAmount,
-          type: this.transactionType,
-          repeat: this.repeat,
-          walletId: this.idWalletSelected,
-          categoryId: this.transactionCategoryIdSelected,
-          active: true,
-          description: this.transactionDescription,
-        }
-        this.walletService.createTransaction(transaction).subscribe(
-          () => {
-            this.utilsSvc.dismissLoading();
-            this.utilsSvc.presentToast({
-              message: 'Transaction Created Success',
-              color: 'success',
-              position: 'top',
-              icon: 'checkmark-circle-outline',
-              duration: 2000,
-            });
-            form.resetForm();
-            this.getUserTransactions();
-            this.modal.dismiss();
-          },
-          error => {
-            this.utilsSvc.dismissLoading();
-            this.utilsSvc.presentToast({
-              message: `Error: ${error}`,
-              color: 'warning',
-              position: 'top',
-              icon: 'alert-circle-outline',
-              duration: 2000,
-            });
-            console.log(error)
-          }
-        )
+        this.createOrUpdateTransaction(transaction, true, form);
       }
     }
+  }
+
+  createOrUpdateTransaction(transaction: Transaction, create: boolean, form: NgForm) {
+    this.utilsSvc.presentLoading();
+    this.walletService.createOrUpdateTransaction(transaction, create).subscribe(
+      () => {
+        this.utilsSvc.dismissLoading();
+        const message = create ? 'Transaction Created successfully' : 'Transaction updated successfully'
+         this.utilsSvc.presentToast({
+          message: message,
+          color: 'success',
+          position: 'top',
+          icon: 'checkmark-circle-outline',
+          duration: 2000,
+        });
+        form.resetForm();
+        this.getTransactionCategories();
+        this.modal.dismiss();
+      },
+      error => {
+        this.utilsSvc.dismissLoading();
+        this.utilsSvc.presentToast({
+          message: `Error: ${error}`,
+          color: 'warning',
+          position: 'top',
+          icon: 'alert-circle-outline',
+          duration: 2000,
+        });
+        console.log(error)
+      }
+    )
   }
 
   cancel() {

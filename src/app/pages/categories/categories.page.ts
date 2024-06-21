@@ -55,19 +55,6 @@ export class CategoriesPage implements OnInit {
     )
   }
 
-  currencyFormatter(value: number) {
-    const formatter = new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      minimumFractionDigits: 2,
-      currency: 'USD'
-    }) 
-    return formatter.format(value)
-  }
-
-  editCategory(category: Category) {
-
-  }
-
   confirmDeleteCategory(category: Category) {
     this.utilsSvc.presentAlert({
       header: 'Delete category!',
@@ -125,7 +112,7 @@ export class CategoriesPage implements OnInit {
       error => {
         this.utilsSvc.dismissLoading();
         this.utilsSvc.presentToast({
-          message: `Error: ${error}`,
+          message: `Error: ${error.error.data}`,
           color: 'warning',
           position: 'top',
           icon: 'alert-circle-outline',

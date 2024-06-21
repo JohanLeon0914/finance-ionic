@@ -77,22 +77,18 @@ export class WalletService {
     return this.http.get<any>(`${this.apiUrl}/transaction`, { headers });
   }
 
-  createTransaction(transaction: Transaction): Observable<any> {
+  createOrUpdateTransaction(transaction: Transaction, create: boolean): Observable<any> {
     const headers = this.getAuthHeaders();
-    this.authService._refresh$.next()
-    return this.http.post<any>(`${this.apiUrl}/transaction`, transaction, { headers }).pipe(
-      tap(response => {
-        if (response) {
-          this.authService._refresh$.next()
-        }
-      })
-    );
-  }
-
-  updateTransaction(transaction: Transaction): Observable<any> {
-    const headers = this.getAuthHeaders();
-    this.authService._refresh$.next()
-    return this.http.patch<any>(`${this.apiUrl}/transaction`, transaction, { headers }).pipe(
+    if(create) {
+      return this.http.post<any>(`${this.apiUrl}/transaction`, transaction, { headers }).pipe(
+        tap(response => {
+          if (response) {
+            this.authService._refresh$.next()
+          }
+        })
+      );
+    } 
+    return this.http.patch<any>(`${this.apiUrl}/transaction/${transaction.id}`, transaction, { headers }).pipe(
       tap(response => {
         if (response) {
           this.authService._refresh$.next()
