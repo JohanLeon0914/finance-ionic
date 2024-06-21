@@ -40,6 +40,7 @@ export class TransactionsPage {
   repeat: string = '';
   transactionCategoryIdSelected: number | null = 0;
   transactionSelected: Transaction | null = null;
+  categoryName: string = '';
   repeatOptions: string[] = [
     "NEVER",
     "EVERY DAY",
@@ -173,6 +174,7 @@ export class TransactionsPage {
 
   onSubmit(form: NgForm) {
     if (form.valid) {
+      this.utilsSvc.presentLoading();
       if(this.transactionSelected) {
         const transaction: Transaction = {
           date: this.transactionDate,
@@ -184,7 +186,6 @@ export class TransactionsPage {
           active: true,
           description: this.transactionDescription,
         } 
-        console.log(transaction)
         this.walletService.createTransaction(transaction).subscribe(
           () => {
             this.utilsSvc.dismissLoading();
@@ -263,5 +264,6 @@ export class TransactionsPage {
       this.transactionSelected = null;
     this.modal.dismiss(null, 'cancel');
   }
+
 
 }

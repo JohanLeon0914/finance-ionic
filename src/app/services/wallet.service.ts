@@ -4,6 +4,7 @@ import { AuthService } from './auth.service';
 import { Observable, tap } from 'rxjs';
 import { Wallet } from 'src/models/wallet.model';
 import { Transaction } from 'src/models/transaction.model';
+import { Category } from 'src/models/category.model';
 
 @Injectable({
   providedIn: 'root'
@@ -111,9 +112,29 @@ export class WalletService {
     );;
   }
 
-
   getTransactionCategories(): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.http.get<any>(`${this.apiUrl}/category`, { headers });
   }
+
+  createOrUpdateCategory(category: Category, create: boolean): Observable<any> {
+    const headers = this.getAuthHeaders();
+    if(create) {
+      return this.http.post<any>(`${this.apiUrl}/category`, category, { headers }).pipe(
+        tap(response => {
+          if (response) {
+            this.authService._refresh$.next()
+          }
+        })
+      );
+    } 
+    return this.http.patch<any>(`${this.apiUrl}/category/${category.id}`, category, { headers }).pipe(
+      tap(response => {
+        if (response) {
+          this.authService._refresh$.next()
+        }
+      })
+    );
+  }
+
 }

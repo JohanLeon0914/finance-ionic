@@ -38,8 +38,11 @@
 
   <ion-button id="open-modal-transaction" expand="block" color="success">
     <ion-icon slot="end" name="cash-outline"></ion-icon>
-    Create
+    Create a transaction
   </ion-button>
+  <!-- <ion-button id="open-modal-category" expand="block">
+    Create a category
+  </ion-button> -->
 
     <!-- MODAL CREATE OR EDIT A TRANSACTION -->
     <ion-modal trigger="open-modal-transaction">
@@ -71,6 +74,9 @@
             } @else {
               <ion-list>
                 <form #transactionForm="ngForm" (ngSubmit)="onSubmit(transactionForm)">
+                  <ion-item>
+                    <ion-title>Transaction</ion-title>
+                  </ion-item>
                   <!-- Wallet Select -->
                   <ion-item>
                     <ion-select label="Select a wallet" label-placement="floating" 
@@ -163,9 +169,11 @@
                     @if (transactionSelected) { Update } @else { Create }
                   </ion-button>
                 </form>
+                
               </ion-list>
             }
         </ion-content>
       </ng-template>
     </ion-modal>
+
 </ion-content>
