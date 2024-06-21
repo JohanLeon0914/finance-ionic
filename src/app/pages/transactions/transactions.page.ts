@@ -54,6 +54,7 @@ export class TransactionsPage {
     "EVERY SIX MONTHS",
     "EVERY YEAR"
   ];
+  selectedWalletIdToFilterTransactions: number | null = null;
 
   constructor() {
     addIcons({ cashOutline, closeCircleOutline, checkmarkCircleOutline, alertCircleOutline, pencilOutline, trashOutline })
@@ -84,12 +85,18 @@ export class TransactionsPage {
   getUserTransactions() {
     this.walletService.getUserTransactions().subscribe(
       response => {
-        this.transactions = response.data;
+        if (this.selectedWalletIdToFilterTransactions) {
+          this.transactions = response.data.filter((transaction: Transaction) => 
+            transaction.walletId === this.selectedWalletIdToFilterTransactions
+          );
+        } else {
+          this.transactions = response.data;
+        }
       },
       error => {
-        console.log(error)
+        console.log(error);
       }
-    )
+    );
   }
 
   getTransactionCategories() {
@@ -221,6 +228,10 @@ export class TransactionsPage {
         console.log(error)
       }
     )
+  }
+
+  filterTransactionsByWalletId(event: any) {
+    this.getUserTransactions();
   }
 
   cancel() {
