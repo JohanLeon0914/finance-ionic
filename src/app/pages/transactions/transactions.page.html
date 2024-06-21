@@ -39,7 +39,7 @@
     @for (transaction of transactions; track $index) {
     <ion-item>
       <ion-label>
-        <h2>{{ transaction.description }}</h2>
+        <h2>{{ truncateDescription(transaction.description, 30) }}</h2>
         <p> {{ getWalletNameById(transaction.walletId) }} </p>
         <p>{{ currencyFormatter(transaction.amount) }}</p>
       </ion-label>

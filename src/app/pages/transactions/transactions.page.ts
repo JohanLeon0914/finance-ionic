@@ -239,6 +239,13 @@ export class TransactionsPage {
     return wallet ? wallet.name : 'Wallet not found';
   }
 
+  truncateDescription(description: string, maxLength: number): string {
+    if (description.length > maxLength) {
+      return description.slice(0, maxLength) + '...';
+    }
+    return description;
+  }
+
   cancel() {
       this.transactionAmount = 0;
       this.transactionDescription = '';
