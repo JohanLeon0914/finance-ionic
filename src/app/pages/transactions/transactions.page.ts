@@ -234,6 +234,11 @@ export class TransactionsPage {
     this.getUserTransactions();
   }
 
+  getWalletNameById(walletId: number | string): string {
+    const wallet = this.userWallets.find(w => w.id === walletId);
+    return wallet ? wallet.name : 'Wallet not found';
+  }
+
   cancel() {
       this.transactionAmount = 0;
       this.transactionDescription = '';

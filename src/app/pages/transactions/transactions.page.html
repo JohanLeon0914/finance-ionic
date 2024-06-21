@@ -40,6 +40,7 @@
     <ion-item>
       <ion-label>
         <h2>{{ transaction.description }}</h2>
+        <p> {{ getWalletNameById(transaction.walletId) }} </p>
         <p>{{ currencyFormatter(transaction.amount) }}</p>
       </ion-label>
       <ion-button
