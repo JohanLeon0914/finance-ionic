@@ -57,7 +57,7 @@ export class SignUpComponent implements OnInit {
       error => {
         this.utilsSvc.dismissLoading();
         this.utilsSvc.presentToast({
-          message: 'Sign Up Failed',
+          message: `Sign Up Failed: ${error.error.data}`,
           color: 'danger',
           position: 'bottom',
           icon: 'alert-circle-outline',

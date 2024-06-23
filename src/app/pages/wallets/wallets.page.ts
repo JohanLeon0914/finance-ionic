@@ -85,7 +85,7 @@ export class WalletsPage {
           error => {
             this.utilsSvc.dismissLoading();
             this.utilsSvc.presentToast({
-              message: `Error: ${error}`,
+              message: `Error: ${error.error.data}`,
               color: 'warning',
               position: 'top',
               icon: 'alert-circle-outline',
@@ -117,7 +117,7 @@ export class WalletsPage {
           error => {
             this.utilsSvc.dismissLoading();
             this.utilsSvc.presentToast({
-              message: `Error: ${error}`,
+              message: `Error: ${error.error.data}`,
               color: 'warning',
               position: 'top',
               icon: 'alert-circle-outline',
@@ -175,7 +175,7 @@ export class WalletsPage {
       error => {
         this.utilsSvc.dismissLoading();
         this.utilsSvc.presentToast({
-          message: `Error: ${error}`,
+          message: `Error: ${error.error.data}`,
           color: 'warning',
           position: 'top',
           icon: 'alert-circle-outline',
