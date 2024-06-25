@@ -13,7 +13,6 @@ import { Category } from 'src/models/category.model';
 import { Transaction } from 'src/models/transaction.model';
 import { Wallet } from 'src/models/wallet.model';
 
-
 @Component({
   selector: 'app-transactions',
   templateUrl: 'transactions.page.html',
@@ -33,14 +32,16 @@ export class TransactionsPage {
   categories: Category[] = [];
   idWalletSelected: number | null = null;
   transactions: Transaction[] = [];
-  transactionDate: Date = new Date();
-  transactionAmount: number = 0;
-  transactionDescription: string = '';
-  transactionType: string = '';
-  repeat: string = '';
-  transactionCategoryIdSelected: number | null = 0;
-  transactionSelected: Transaction | null = null;
-  categoryName: string = '';
+  transactionSelected: Transaction = {
+    date: new Date(),
+    description: '',
+    amount: 0,
+    type: '',
+    repeat: '',
+    walletId: 0,
+    categoryId: 0,
+    active: true
+  };
   repeatOptions: string[] = [
     "NEVER",
     "EVERY DAY",
@@ -86,7 +87,7 @@ export class TransactionsPage {
     this.walletService.getUserTransactions().subscribe(
       response => {
         if (this.selectedWalletIdToFilterTransactions) {
-          this.transactions = response.data.filter((transaction: Transaction) => 
+          this.transactions = response.data.filter((transaction: Transaction) =>
             transaction.walletId === this.selectedWalletIdToFilterTransactions
           );
         } else {
@@ -115,19 +116,12 @@ export class TransactionsPage {
       style: 'currency',
       minimumFractionDigits: 2,
       currency: 'USD'
-    }) 
+    })
     return formatter.format(value)
   }
 
   editTransaction(transaction: Transaction) {
-    this.transactionAmount = transaction.amount;
     this.transactionSelected = transaction;
-    this.idWalletSelected = transaction.walletId;
-    this.transactionDescription = transaction.description;
-    this.transactionType = transaction.type;
-    this.repeat = transaction.repeat;
-    this.transactionCategoryIdSelected = transaction.categoryId;
-    this.transactionDate = transaction.date;
     this.modal.present();
   }
 
@@ -158,7 +152,7 @@ export class TransactionsPage {
         this.utilsSvc.dismissLoading();
         this.utilsSvc.presentToast({
           message: 'Transaction Deleted Success',
-          color:'success',
+          color: 'success',
           position: 'top',
           icon: 'checkmark-circle-outline',
           duration: 2000,
@@ -181,20 +175,21 @@ export class TransactionsPage {
 
   onSubmit(form: NgForm) {
     if (form.valid) {
-      const transaction: Transaction = {
-        date: this.transactionDate,
-        amount: this.transactionAmount,
-        type: this.transactionType,
-        repeat: this.repeat,
-        walletId: this.idWalletSelected,
-        categoryId: this.transactionCategoryIdSelected,
-        active: true,
-        description: this.transactionDescription,
-      } 
-      if(this.transactionSelected) {
+      if (this.transactionSelected.id) {
+        const transaction = {
+          id: this.transactionSelected.id,
+          date: this.transactionSelected.date,
+          description: this.transactionSelected.description,
+          amount: this.transactionSelected.amount,
+          type: this.transactionSelected.type,
+          repeat: this.transactionSelected.repeat,
+          walletId: this.transactionSelected.walletId,
+          categoryId: this.transactionSelected.categoryId,
+          active: this.transactionSelected.active,
+        }
         this.createOrUpdateTransaction(transaction, false, form);
       } else {
-        this.createOrUpdateTransaction(transaction, true, form);
+        this.createOrUpdateTransaction(this.transactionSelected, true, form);
       }
     }
   }
@@ -205,7 +200,7 @@ export class TransactionsPage {
       () => {
         this.utilsSvc.dismissLoading();
         const message = create ? 'Transaction Created successfully' : 'Transaction updated successfully'
-         this.utilsSvc.presentToast({
+        this.utilsSvc.presentToast({
           message: message,
           color: 'success',
           position: 'top',
@@ -247,14 +242,16 @@ export class TransactionsPage {
   }
 
   cancel() {
-      this.transactionAmount = 0;
-      this.transactionDescription = '';
-      this.transactionType = '';
-      this.repeat = '';
-      this.transactionCategoryIdSelected = 0;
-      this.transactionDate = new Date();
-      this.idWalletSelected = null;
-      this.transactionSelected = null;
+    this.transactionSelected = {
+      date: new Date(),
+      description: '',
+      amount: 0,
+      type: '',
+      repeat: '',
+      walletId: 0,
+      categoryId: 0,
+      active: true
+    };
     this.modal.dismiss(null, 'cancel');
   }
 

@@ -108,7 +108,7 @@
               <ion-select
                 label="Select a wallet"
                 label-placement="floating"
-                [(ngModel)]="idWalletSelected"
+                [(ngModel)]="transactionSelected.walletId"
                 name="idWalletSelected"
                 required
                 #walletSelect="ngModel"
@@ -131,7 +131,7 @@
                 name="transactionDate"
                 type="date"
                 placeholder="Transaction date"
-                [(ngModel)]="transactionDate"
+                [(ngModel)]="transactionSelected.date"
                 required
                 #dateInput="ngModel"
               ></ion-input>
@@ -147,7 +147,7 @@
                 name="transactionAmount"
                 type="number"
                 placeholder="Transaction amount"
-                [(ngModel)]="transactionAmount"
+                [(ngModel)]="transactionSelected.amount"
                 required
                 #amountInput="ngModel"
               ></ion-input>
@@ -163,7 +163,7 @@
                 name="transactionDescription"
                 type="text"
                 placeholder="Transaction description"
-                [(ngModel)]="transactionDescription"
+                [(ngModel)]="transactionSelected.description"
                 required
                 #descriptionInput="ngModel"
               ></ion-input>
@@ -177,7 +177,7 @@
               <ion-select
                 label="Transaction type"
                 label-placement="floating"
-                [(ngModel)]="transactionType"
+                [(ngModel)]="transactionSelected.type"
                 name="transactionType"
                 required
                 #typeSelect="ngModel"
@@ -195,7 +195,7 @@
               <ion-select
                 label="Select a category"
                 label-placement="floating"
-                [(ngModel)]="transactionCategoryIdSelected"
+                [(ngModel)]="transactionSelected.categoryId"
                 name="transactionCategory"
                 required
                 #categorySelect="ngModel"
@@ -216,7 +216,7 @@
               <ion-select
                 label="Repeat options"
                 label-placement="floating"
-                [(ngModel)]="repeat"
+                [(ngModel)]="transactionSelected.repeat"
                 name="repeat"
                 required
                 #repeatSelect="ngModel"
@@ -238,7 +238,7 @@
               type="submit"
               [disabled]="transactionForm.invalid"
             >
-              @if (transactionSelected) { Update } @else { Create }
+              @if (transactionSelected.id) { Update } @else { Create }
             </ion-button>
           </form>
         </ion-list>
