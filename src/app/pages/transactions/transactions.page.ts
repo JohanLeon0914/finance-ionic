@@ -1,7 +1,7 @@
 import { Component, ViewChild, inject } from '@angular/core';
 import { FormsModule, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { IonModal, IonHeader, IonIcon, IonToolbar, IonTitle, IonContent, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonList, IonItem, IonSelect, IonButtons, IonInput, IonSelectOption, IonLabel, IonCheckbox, IonText } from '@ionic/angular/standalone';
+import { IonModal, IonHeader, IonIcon, IonToolbar, IonTitle, IonContent, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonList, IonItem, IonSelect, IonButtons, IonInput, IonSelectOption, IonLabel, IonCheckbox, IonText, IonDatetime } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { alertCircleOutline, cashOutline, checkmarkCircleOutline, closeCircleOutline, pencilOutline, trashOutline } from 'ionicons/icons';
 import { Subscription } from 'rxjs';
@@ -18,7 +18,7 @@ import { Wallet } from 'src/models/wallet.model';
   templateUrl: 'transactions.page.html',
   styleUrls: ['transactions.page.scss'],
   standalone: true,
-  imports: [IonText, IonCheckbox, IonLabel, FormsModule, ReactiveFormsModule, IonInput, IonButtons, IonModal, IonCardContent, IonIcon, IonHeader, IonToolbar, IonTitle, IonContent, HeaderComponent, IonButton, IonCard, IonCardHeader, IonCardTitle, IonList, IonItem, IonSelect, IonSelectOption],
+  imports: [IonDatetime, IonText, IonCheckbox, IonLabel, FormsModule, ReactiveFormsModule, IonInput, IonButtons, IonModal, IonCardContent, IonIcon, IonHeader, IonToolbar, IonTitle, IonContent, HeaderComponent, IonButton, IonCard, IonCardHeader, IonCardTitle, IonList, IonItem, IonSelect, IonSelectOption],
 })
 export class TransactionsPage {
 
@@ -32,8 +32,10 @@ export class TransactionsPage {
   categories: Category[] = [];
   idWalletSelected: number | null = null;
   transactions: Transaction[] = [];
+  today = new Date();
+  formattedToday = `${this.today.getFullYear()}-${String(this.today.getMonth() + 1).padStart(2, '0')}-${String(this.today.getDate()).padStart(2, '0')}`;
   transactionSelected: Transaction = {
-    date: new Date(),
+    date: this.formattedToday,
     description: '',
     amount: 0,
     type: '',
@@ -92,6 +94,16 @@ export class TransactionsPage {
           );
         } else {
           this.transactions = response.data;
+          this.transactions = this.transactions.map(transaction => {
+            const date = new Date(transaction.date);
+            transaction.date = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+            
+            if (transaction.next_date) {
+              const nextDate = new Date(transaction.next_date);
+              transaction.next_date = `${nextDate.getFullYear()}-${String(nextDate.getMonth() + 1).padStart(2, '0')}-${String(nextDate.getDate()).padStart(2, '0')}`;
+            }
+            return transaction;
+          });
         }
       },
       error => {
@@ -243,7 +255,7 @@ export class TransactionsPage {
 
   cancel() {
     this.transactionSelected = {
-      date: new Date(),
+      date: this.formattedToday,
       description: '',
       amount: 0,
       type: '',
