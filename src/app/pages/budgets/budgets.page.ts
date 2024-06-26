@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
-import { IonModal, IonHeader, IonIcon, IonToolbar, IonTitle, IonContent, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonList, IonItem, IonSelect, IonButtons, IonInput, IonSelectOption, IonLabel, IonCheckbox, IonText } from '@ionic/angular/standalone';
+import { IonRow,IonCardSubtitle, IonModal, IonHeader, IonIcon, IonToolbar, IonTitle, IonContent, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonList, IonItem, IonSelect, IonButtons, IonInput, IonSelectOption, IonLabel, IonCheckbox, IonText, IonCol } from '@ionic/angular/standalone';
 import { AuthService } from 'src/app/services/auth.service';
 import { UtilService } from 'src/app/services/utils.service';
 import { Subscription } from 'rxjs';
@@ -17,7 +17,7 @@ import { HeaderComponent } from 'src/app/shared/components/header/header.compone
   templateUrl: './budgets.page.html',
   styleUrls: ['./budgets.page.scss'],
   standalone: true,
-  imports: [IonModal, IonIcon, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonList, IonItem, IonSelect, IonButtons, IonInput, IonSelectOption, IonLabel, IonCheckbox, IonText, HeaderComponent]
+  imports: [IonRow, IonCol, IonCardSubtitle,IonModal, IonIcon, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonList, IonItem, IonSelect, IonButtons, IonInput, IonSelectOption, IonLabel, IonCheckbox, IonText, HeaderComponent]
 })
 export class BudgetsPage implements OnInit {
 

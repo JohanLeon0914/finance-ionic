@@ -23,31 +23,42 @@
     } @else {
       <ion-list>
         @for (budget of budgets; track $index) {
-          <ion-item>
-            <ion-label>
-              <h3><b>Name: </b>{{ truncateText(budget.name, 10) }}</h3>
-              <h3><b>Description: </b>{{ truncateText(budget.description, 20) }}</h3>
-              <h3><b>Amount:</b> {{ currencyFormatter(budget.amount) }}</h3>
-              <h3>
-                <b>
-                  Initial Date:
-                </b>
-              </h3>
-              <p>{{ formatedDate(budget.initial_date) }}</p>
-              <h3>
-                <b>
-                  End Date: 
-                </b>
-              </h3>
-              <p>{{ formatedDate(budget.end_date) }}</p>
-            </ion-label>
-            <ion-button (click)="editBudget(budget)" expand="block" color="success">
-              <ion-icon name="pencil-outline"></ion-icon>
-            </ion-button>
-            <ion-button (click)="confirmDeleteBudget(budget)" expand="block" color="danger">
-              <ion-icon name="trash-outline"></ion-icon>
-            </ion-button>
-          </ion-item>
+            <ion-card>
+              <ion-card-header>
+                <ion-card-title>{{ truncateText(budget.name, 10) }}</ion-card-title>
+                <ion-card-subtitle>{{ truncateText(budget.description, 20) }}</ion-card-subtitle>
+              </ion-card-header>
+            
+              <ion-card-content>
+                <ion-item>
+                  <ion-label>
+                    <ion-icon class="icon-amount" name="wallet-outline"></ion-icon>
+                    <span>{{ currencyFormatter(budget.amount) }}</span>
+                  </ion-label>
+                </ion-item>
+                
+                <ion-item>
+                  <ion-icon name="calendar-outline"></ion-icon>
+                  <ion-label>
+                    <p><b>Initial Date:</b> {{ formatedDate(budget.initial_date) }}</p>
+                    <p><b>End Date:</b> {{ formatedDate(budget.end_date) }}</p>
+                  </ion-label>
+                </ion-item>
+              </ion-card-content>
+            
+              <ion-row>
+                <ion-col>
+                  <ion-button (click)="editBudget(budget)" expand="block" color="success">
+                    <ion-icon name="pencil-outline"></ion-icon>Edit
+                  </ion-button>
+                </ion-col>
+                <ion-col>
+                  <ion-button (click)="confirmDeleteBudget(budget)" expand="block" color="danger">
+                    <ion-icon name="trash-outline"></ion-icon>Delete
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-card>
           }
       </ion-list>
     }
