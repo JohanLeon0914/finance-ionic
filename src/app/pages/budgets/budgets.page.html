@@ -40,8 +40,11 @@
                 <ion-item>
                   <ion-icon name="calendar-outline"></ion-icon>
                   <ion-label>
-                    <p><b>Initial Date:</b> {{ formatedDate(budget.initial_date) }}</p>
-                    <p><b>End Date:</b> {{ formatedDate(budget.end_date) }}</p>
+                    <ion-icon class="icon-amount" name="calendar-clear-outline"></ion-icon>
+                    <span><b>Initial Date:</b> {{ formatedDate(budget.initial_date) }}</span>
+                    <hr>
+                    <ion-icon class="icon-amount" name="calendar-clear-outline"></ion-icon>
+                    <span><b>End Date:</b> {{ formatedDate(budget.end_date) }}</span>
                   </ion-label>
                 </ion-item>
               </ion-card-content>
