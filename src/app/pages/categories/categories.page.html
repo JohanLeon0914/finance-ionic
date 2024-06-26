@@ -8,6 +8,10 @@
 <ion-content [fullscreen]="true">
 
   @if (!categories.length) {
+    <ion-button id="open-modal-category" expand="block" color="success">
+      <ion-icon slot="end" name="pricetag-outline"></ion-icon>
+      Create a category
+    </ion-button>
     <ion-card>
       <ion-card-header>
         <ion-card-title>No Categories Found</ion-card-title>
@@ -27,12 +31,6 @@
           }
       </ion-list>
     }
-
-
-  <ion-button id="open-modal-category" expand="block" color="success">
-    <ion-icon slot="end" name="pricetag-outline"></ion-icon>
-    Create a category
-  </ion-button>
 
     <!-- MODAL CREATE OR EDIT A CATEGORY -->
     <ion-modal trigger="open-modal-category">

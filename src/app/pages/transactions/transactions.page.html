@@ -25,6 +25,12 @@
   </ion-select>
   </ion-item>
 
+  <ion-button id="open-modal-transaction" expand="block" color="success">
+    <ion-icon slot="end" name="cash-outline"></ion-icon>
+    Create a transaction
+  </ion-button>
+
+
   @if (!transactions.length) {
   <ion-card>
     <ion-card-header>
@@ -61,11 +67,6 @@
     }
   </ion-list>
   }
-
-  <ion-button id="open-modal-transaction" expand="block" color="success">
-    <ion-icon slot="end" name="cash-outline"></ion-icon>
-    Create a transaction
-  </ion-button>
 
   <!-- MODAL CREATE OR EDIT A TRANSACTION -->
   <ion-modal trigger="open-modal-transaction">
@@ -183,7 +184,7 @@
                 #typeSelect="ngModel"
               >
                 <ion-select-option value="INCOME">Income</ion-select-option>
-                <ion-select-option value="OUTFLOW">Outcome</ion-select-option>
+                <ion-select-option value="OUTFLOW">Outflow</ion-select-option>
               </ion-select>
               @if (typeSelect.invalid && typeSelect.touched) {
               <ion-text color="danger">Select a transaction type.</ion-text>

@@ -6,6 +6,10 @@
 ></app-header>
 
 <ion-content [fullscreen]="true">
+  <ion-button id="open-modal" expand="block" color="success">
+    <ion-icon slot="end" name="wallet-outline"></ion-icon>
+    Create
+  </ion-button>
   @if (!userWallets.length) {
   <ion-card>
     <ion-card-header>
@@ -34,11 +38,6 @@
     }
   </ion-list>
   }
-
-  <ion-button id="open-modal" expand="block" color="success">
-    <ion-icon slot="end" name="wallet-outline"></ion-icon>
-    Create
-  </ion-button>
 
   <ion-modal trigger="open-modal">
     <ng-template>
