@@ -1,3 +1,4 @@
+import { group, transition } from '@angular/animations';
 import { Component, ViewChild, inject } from '@angular/core';
 import { FormsModule, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -96,7 +97,6 @@ export class TransactionsPage {
         } else {
           this.transactions = response.data;
         }
-        
         this.transactions = this.transactions.map(transaction => {
           const date = new Date(transaction.date);
           transaction.date = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
@@ -121,7 +121,6 @@ export class TransactionsPage {
           date,
           transactions: transactionsByDate[date]
         }));
-  
       },
       error => {
         console.log(error);
@@ -215,7 +214,7 @@ export class TransactionsPage {
           walletId: this.transactionSelected.walletId,
           categoryId: this.transactionSelected.categoryId,
           active: this.transactionSelected.active,
-        }
+        } 
         this.createOrUpdateTransaction(transaction, false, form);
       } else {
         this.createOrUpdateTransaction(this.transactionSelected, true, form);
@@ -224,7 +223,7 @@ export class TransactionsPage {
   }
 
   createOrUpdateTransaction(transaction: Transaction, create: boolean, form: NgForm) {
-    this.utilsSvc.presentLoading();
+    this.utilsSvc.presentLoading(); 
     this.walletService.createOrUpdateTransaction(transaction, create).subscribe(
       () => {
         this.utilsSvc.dismissLoading();
@@ -263,7 +262,10 @@ export class TransactionsPage {
     return wallet ? wallet.name : 'Wallet not found';
   }
 
-  truncateDescription(description: string, maxLength: number): string {
+  truncateDescription(description: string | null | undefined, maxLength: number): string {
+    if (!description) {
+      return ''; 
+    }
     if (description.length > maxLength) {
       return description.slice(0, maxLength) + '...';
     }

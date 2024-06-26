@@ -27,7 +27,7 @@
     Create a transaction
   </ion-button>
 
-  @if (!transactions.length) {
+  @if (!transactions) {
   <ion-card>
     <ion-card-header>
       <ion-card-title>No Transactions Found</ion-card-title>
@@ -85,7 +85,7 @@
         </ion-toolbar>
       </ion-header>
       <ion-content class="ion-padding">
-        @if (!userWallets.length) {
+        @if (!userWallets) {
         <ion-card>
           <ion-card-header>
             <ion-card-title>No Wallets Found</ion-card-title>
