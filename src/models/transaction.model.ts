@@ -8,5 +8,5 @@ export interface Transaction {
     walletId: number;
     categoryId?: number;
     active: boolean;
-    next_date?: Date | string;
+    next_date?: string;
 }

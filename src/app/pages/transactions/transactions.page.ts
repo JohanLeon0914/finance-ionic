@@ -98,16 +98,18 @@ export class TransactionsPage {
           this.transactions = response.data;
         }
         this.transactions = this.transactions.map(transaction => {
-          const date = new Date(transaction.date);
-          transaction.date = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
-          
-          if (transaction.next_date) {
-            const nextDate = new Date(transaction.next_date);
-            transaction.next_date = `${nextDate.getFullYear()}-${String(nextDate.getMonth() + 1).padStart(2, '0')}-${String(nextDate.getDate()).padStart(2, '0')}`;
+          if (transaction.date) {
+            const dateParts = transaction.date.split('T')[0].split('-'); 
+            transaction.date = `${dateParts[0]}-${dateParts[1]}-${dateParts[2]}`; 
           }
+        
+          if (transaction.next_date) {
+            const nextDateParts = transaction.next_date.split('T')[0].split('-');
+            transaction.next_date = `${nextDateParts[0]}-${nextDateParts[1]}-${nextDateParts[2]}`;
+          }
+        
           return transaction;
         });
-  
         // Agrupar transacciones por fecha
         const transactionsByDate = this.transactions.reduce((acc: { [key: string]: Transaction[] }, transaction: Transaction) => {
           if (!acc[transaction.date]) {
