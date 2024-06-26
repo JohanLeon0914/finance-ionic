@@ -17,7 +17,7 @@ import { HeaderComponent } from 'src/app/shared/components/header/header.compone
   templateUrl: './budgets.page.html',
   styleUrls: ['./budgets.page.scss'],
   standalone: true,
-  imports: [IonModal ,IonIcon ,IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonList, IonItem, IonSelect, IonButtons, IonInput, IonSelectOption, IonLabel, IonCheckbox, IonText, HeaderComponent]
+  imports: [IonModal, IonIcon, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonList, IonItem, IonSelect, IonButtons, IonInput, IonSelectOption, IonLabel, IonCheckbox, IonText, HeaderComponent]
 })
 export class BudgetsPage implements OnInit {
 
@@ -62,6 +62,14 @@ export class BudgetsPage implements OnInit {
     this.budgetService.getUserBudgets().subscribe(
       response => {
         this.budgets = response.data;
+        this.budgets = this.budgets.map(budget => {
+          const initialDate = new Date(budget.initial_date);
+          budget.initial_date = `${initialDate.getFullYear()}-${String(initialDate.getMonth() + 1).padStart(2, '0')}-${String(initialDate.getDate()).padStart(2, '0')}`;
+
+          const endDate = new Date(budget.end_date);
+          budget.end_date = `${endDate.getFullYear()}-${String(endDate.getMonth() + 1).padStart(2, '0')}-${String(endDate.getDate()).padStart(2, '0')}`;
+          return budget;
+        });
       },
       error => {
         console.log(error)
@@ -92,7 +100,7 @@ export class BudgetsPage implements OnInit {
   onSubmit(form: NgForm) {
     if (form.valid) {
       console.log(this.budgetSelected)
-      if(this.budgetSelected.id) {
+      if (this.budgetSelected.id) {
         const budget: Budget = {
           name: this.budgetSelected.name,
           id: this.budgetSelected.id,
@@ -101,7 +109,7 @@ export class BudgetsPage implements OnInit {
           end_date: this.budgetSelected.end_date,
           amount: this.budgetSelected.amount,
           userId: this.budgetSelected.userId,
-        } 
+        }
         this.createOrUpdateCategory(budget, false, form);
       } else {
         this.createOrUpdateCategory(this.budgetSelected, true, form);
@@ -132,7 +140,7 @@ export class BudgetsPage implements OnInit {
       () => {
         this.utilsSvc.dismissLoading();
         const message = create ? 'Budget Created successfully' : 'Budget updated successfully'
-         this.utilsSvc.presentToast({
+        this.utilsSvc.presentToast({
           message: message,
           color: 'success',
           position: 'top',
