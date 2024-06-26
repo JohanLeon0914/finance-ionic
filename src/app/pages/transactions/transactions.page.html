@@ -48,6 +48,10 @@
         <h2>{{ truncateDescription(transaction.description, 30) }}</h2>
         <p> {{ getWalletNameById(transaction.walletId) }} </p>
         <p>{{ currencyFormatter(transaction.amount) }}</p>
+        @if (transaction.repeat != 'NEVER') {
+          <p>{{ transaction.repeat }}</p>
+        }
+        <p></p>
       </ion-label>
       <ion-button
         (click)="editTransaction(transaction)"
