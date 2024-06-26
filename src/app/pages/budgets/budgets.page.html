@@ -25,15 +25,19 @@
         @for (budget of budgets; track $index) {
           <ion-item>
             <ion-label>
-              <h2>{{ truncateText(budget.name, 20) }}</h2>
-              <p>{{ truncateText(budget.description, 30) }}</p>
-              <p>Amount: {{ currencyFormatter(budget.amount) }}</p>
+              <h3><b>Name: </b>{{ truncateText(budget.name, 10) }}</h3>
+              <h3><b>Description: </b>{{ truncateText(budget.description, 20) }}</h3>
+              <h3><b>Amount:</b> {{ currencyFormatter(budget.amount) }}</h3>
               <h3>
-                Initial Date:
+                <b>
+                  Initial Date:
+                </b>
               </h3>
               <p>{{ formatedDate(budget.initial_date) }}</p>
               <h3>
-                End Date: 
+                <b>
+                  End Date: 
+                </b>
               </h3>
               <p>{{ formatedDate(budget.end_date) }}</p>
             </ion-label>
