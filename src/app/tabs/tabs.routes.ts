@@ -33,6 +33,12 @@ export const routes: Routes = [
         canActivate: [authGuard],
       },
       {
+        path: 'budgets',
+        loadComponent: () =>
+          import('../pages/budgets/budgets.page').then((m) => m.BudgetsPage),
+        canActivate: [authGuard],
+      },
+      {
         path: '',
         redirectTo: '/tabs/wallets',
         pathMatch: 'full',

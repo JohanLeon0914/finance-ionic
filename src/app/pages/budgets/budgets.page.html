@@ -1,0 +1,126 @@
+<app-header
+  color="dark"
+  [centerTitle]="false"
+  [isModal]="false"
+  title="Your Categories"
+></app-header>
+
+<ion-content [fullscreen]="true">
+
+  <ion-button id="open-modal-budget" expand="block" color="success">
+    <ion-icon slot="end" name="pricetag-outline"></ion-icon>
+    Create a budget
+  </ion-button>
+  @if (!budgets.length) {
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>No Categories Found</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        You can create categories with the create button
+      </ion-card-content>
+    </ion-card>
+    } @else {
+      <ion-list>
+        @for (budget of budgets; track $index) {
+          <ion-item>
+            <ion-label>
+              <h2>{{ truncateText(budget.name, 20) }}</h2>
+              <p>{{ truncateText(budget.description, 30) }}</p>
+              <p>Amount: {{ currencyFormatter(budget.amount) }}</p>
+              <h3>
+                Initial Date:
+              </h3>
+              <p>{{ formatedDate(budget.initial_date) }}</p>
+              <h3>
+                End Date: 
+              </h3>
+              <p>{{ formatedDate(budget.end_date) }}</p>
+            </ion-label>
+            <ion-button (click)="editBudget(budget)" expand="block" color="success">
+              <ion-icon name="pencil-outline"></ion-icon>
+            </ion-button>
+            <ion-button (click)="confirmDeleteBudget(budget)" expand="block" color="danger">
+              <ion-icon name="trash-outline"></ion-icon>
+            </ion-button>
+          </ion-item>
+          }
+      </ion-list>
+    }
+
+    <!-- MODAL CREATE OR EDIT A budget -->
+    <ion-modal trigger="open-modal-budget">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar>
+            <ion-buttons slot="end">
+              <ion-button (click)="cancel()">
+                <ion-icon name="close-circle-outline"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+            @if (budgetSelected) {
+            <ion-title>Update a budget</ion-title>
+            } @else {
+            <ion-title>Create a budget</ion-title>
+            }
+          </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding"> 
+              <ion-list>
+                <form #budgetForm="ngForm" (ngSubmit)="onSubmit(budgetForm)">
+                  <ion-item>
+                    <ion-label position="stacked">Name</ion-label>
+                    <ion-input name="budgetName" type="text" placeholder="Budget name" 
+                      [(ngModel)]="budgetSelected.name" required #nameInput="ngModel"></ion-input>
+                    @if (nameInput.invalid && nameInput.touched) {
+                      <ion-text color="danger">Please enter a name.</ion-text>
+                    }
+                  </ion-item>
+
+                  <ion-item>
+                    <ion-label position="stacked">Description</ion-label>
+                    <ion-input name="budgetDescription" type="text" placeholder="Budget Description" 
+                      [(ngModel)]="budgetSelected.description" required #descriptionInput="ngModel"></ion-input>
+                    @if (descriptionInput.invalid && descriptionInput.touched) {
+                      <ion-text color="danger">Please enter a description.</ion-text>
+                    }
+                  </ion-item>
+
+                  <ion-item>
+                    <ion-label position="stacked">Initial Date</ion-label>
+                    <ion-input name="budgetInitialDate" type="date" placeholder="Initial Date" 
+                      [(ngModel)]="budgetSelected.initial_date" required #initialDateInput="ngModel"></ion-input>
+                    @if (initialDateInput.invalid && initialDateInput.touched) {
+                      <ion-text color="danger">Please enter a initial date.</ion-text>
+                    }
+                  </ion-item>
+
+                  <ion-item>
+                    <ion-label position="stacked">End Date</ion-label>
+                    <ion-input name="budgetEndDate" type="date" placeholder="End Date" 
+                      [(ngModel)]="budgetSelected.end_date" required #endDateInput="ngModel"></ion-input>
+                    @if (endDateInput.invalid && endDateInput.touched) {
+                      <ion-text color="danger">Please enter a end date.</ion-text>
+                    }
+                  </ion-item>
+
+                  <ion-item>
+                    <ion-label position="stacked">Amount</ion-label>
+                    <ion-input name="budgetAmount" type="number" placeholder="Budget Amount" 
+                      [(ngModel)]="budgetSelected.amount" required #amountInput="ngModel"></ion-input>
+                    @if (amountInput.invalid && amountInput.touched) {
+                      <ion-text color="danger">Please enter an amount.</ion-text>
+                    }
+                  </ion-item>
+
+                  <ion-button expand="block" type="submit" [disabled]="budgetForm.invalid">
+                    @if (budgetSelected.id) { Update } @else { Create }
+                  </ion-button>
+                </form>
+                
+              </ion-list>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+
+</ion-content>
