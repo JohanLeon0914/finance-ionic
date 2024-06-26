@@ -13,4 +13,30 @@ ion-list {
 .icon-amount {
   margin-right: 10px;
 }
+
+.custom-card {
+  background-color: #000; 
+  border-radius: 10px; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+}
+
+.custom-card ion-card-content {
+  padding: 16px; 
+}
+
+.custom-card ion-card-header {
+  border-bottom: 1px solid #ccc; 
+}
+
+.custom-card ion-row ion-button {
+  --background: #4caf50; 
+  --background-activated: #388e3c; 
+  --background-focused: #4caf50; 
+}
+
+.custom-card ion-row ion-button[color="danger"] {
+  --background: #f44336;
+  --background-activated: #d32f2f; 
+  --background-focused: #f44336; 
+}
   

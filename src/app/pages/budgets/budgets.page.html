@@ -23,7 +23,7 @@
     } @else {
       <ion-list>
         @for (budget of budgets; track $index) {
-            <ion-card>
+            <ion-card class="custom-card">
               <ion-card-header>
                 <ion-card-title>{{ truncateText(budget.name, 10) }}</ion-card-title>
                 <ion-card-subtitle>{{ truncateText(budget.description, 20) }}</ion-card-subtitle>
