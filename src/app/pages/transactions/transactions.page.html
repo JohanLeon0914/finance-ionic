@@ -6,30 +6,26 @@
 ></app-header>
 
 <ion-content [fullscreen]="true">
-
   <ion-item class="ionitem-filter">
     <ion-select
-    label="Filter transactions by wallet"
-    label-placement="floating"
-    [(ngModel)]="selectedWalletIdToFilterTransactions"
-    (ionChange)="filterTransactionsByWalletId($event)"
-  >
-    @for (wallet of userWallets; track $index) {
-    <ion-select-option [value]="wallet.id">
-      {{ wallet.name }}
-    </ion-select-option>
-    }
-    <ion-select-option [value]="null">
-      Any
-    </ion-select-option>
-  </ion-select>
+      label="Filter transactions by wallet"
+      label-placement="floating"
+      [(ngModel)]="selectedWalletIdToFilterTransactions"
+      (ionChange)="filterTransactionsByWalletId($event)"
+    >
+      @for (wallet of userWallets; track $index) {
+      <ion-select-option [value]="wallet.id">
+        {{ wallet.name }}
+      </ion-select-option>
+      }
+      <ion-select-option [value]="null"> Any </ion-select-option>
+    </ion-select>
   </ion-item>
 
   <ion-button id="open-modal-transaction" expand="block" color="success">
     <ion-icon slot="end" name="cash-outline"></ion-icon>
     Create a transaction
   </ion-button>
-
 
   @if (!transactions.length) {
   <ion-card>
@@ -46,10 +42,10 @@
     <ion-item>
       <ion-label>
         <h2>{{ truncateDescription(transaction.description, 30) }}</h2>
-        <p> {{ getWalletNameById(transaction.walletId) }} </p>
+        <p>{{ getWalletNameById(transaction.walletId) }}</p>
         <p>{{ currencyFormatter(transaction.amount) }}</p>
         @if (transaction.repeat != 'NEVER') {
-          <p>{{ transaction.repeat }}</p>
+        <p>{{ transaction.repeat }}</p>
         }
         <p></p>
       </ion-label>
@@ -236,6 +232,11 @@
               <ion-text color="danger">Select a repeat option.</ion-text>
               }
             </ion-item>
+            @if (transactionSelected.id && transactionSelected.next_date) {
+            <ion-item>
+              <p>Next payment date: {{transactionSelected.next_date}}</p>
+            </ion-item>
+            }
 
             <!-- Submit Button -->
             <ion-button
