@@ -11,63 +11,87 @@
     Create a category
   </ion-button>
   @if (!categories.length) {
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>No Categories Found</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        You can create categories with the create button
-      </ion-card-content>
-    </ion-card>
-    } @else {
-      <ion-list>
-        @for (category of categories; track $index) {
-          <ion-item>
-            <ion-label>
-              <h2>{{ category.name }}</h2>
-            </ion-label>
-          </ion-item>
-          }
-      </ion-list>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>No Categories Found</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      You can create categories with the create button
+    </ion-card-content>
+  </ion-card>
+  } @else {
+  <ion-list>
+    @for (category of categories; track $index) {
+    <ion-item>
+      <ion-label>
+        <h2>{{ category.name }}</h2>
+      </ion-label>
+      @if (category.icon) {
+        <ion-icon slot="end" [name]='category.icon'></ion-icon>
+      }
+    </ion-item>
     }
+  </ion-list>
+  }
 
-    <!-- MODAL CREATE OR EDIT A CATEGORY -->
-    <ion-modal trigger="open-modal-category">
-      <ng-template>
-        <ion-header>
-          <ion-toolbar>
-            <ion-buttons slot="end">
-              <ion-button (click)="cancel()">
-                <ion-icon name="close-circle-outline"></ion-icon>
-              </ion-button>
-            </ion-buttons>
-            @if (categorySelected) {
-            <ion-title>Update a category</ion-title>
-            } @else {
-            <ion-title>Create a category</ion-title>
-            }
-          </ion-toolbar>
-        </ion-header>
-        <ion-content class="ion-padding"> 
-              <ion-list>
-                <form #categoryForm="ngForm" (ngSubmit)="onSubmit(categoryForm)">
-                  <ion-item>
-                    <ion-label position="stacked">Name</ion-label>
-                    <ion-input name="categoryName" type="text" placeholder="Category name" 
-                      [(ngModel)]="categoryName" required #descriptionInput="ngModel"></ion-input>
-                    @if (descriptionInput.invalid && descriptionInput.touched) {
-                      <ion-text color="danger">Please enter a description.</ion-text>
-                    }
-                  </ion-item>
-
-                  <ion-button expand="block" type="submit" [disabled]="categoryForm.invalid">
-                    @if (categorySelected) { Update } @else { Create }
+  <!-- MODAL CREATE OR EDIT A CATEGORY -->
+  <ion-modal trigger="open-modal-category">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="end">
+            <ion-button (click)="cancel()">
+              <ion-icon name="close-circle-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+          @if (categorySelected) {
+          <ion-title>Update a category</ion-title>
+          } @else {
+          <ion-title>Create a category</ion-title>
+          }
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <ion-list>
+          <form #categoryForm="ngForm" (ngSubmit)="onSubmit(categoryForm)">
+            <ion-item>
+              <ion-label position="stacked">Name</ion-label>
+              <ion-input
+                name="categoryName"
+                type="text"
+                placeholder="Category name"
+                [(ngModel)]="categoryName"
+                required
+                #nameInput="ngModel"
+              ></ion-input>
+              @if (nameInput.invalid && nameInput.touched) {
+              <ion-text color="danger">Please enter a category name.</ion-text>
+              }
+            </ion-item>
+              @for (icon of iconNames; track $index) {
+                @if (icon === categoryIcon) {
+                  <ion-button
+                    color="warning"                  
+                  >
+                    <ion-icon [name]="icon"></ion-icon>
                   </ion-button>
-                </form>
-                
-              </ion-list>
-        </ion-content>
-      </ng-template>
-    </ion-modal>
+                } @else {
+                  <ion-button (click)="onSelectIcon(icon)">
+                    <ion-icon [name]="icon"></ion-icon>
+                  </ion-button>
+                }
+              }
 
+            <ion-button
+              expand="block"
+              type="submit"
+              [disabled]="categoryForm.invalid"
+            >
+              @if (categorySelected) { Update } @else { Create }
+            </ion-button>
+          </form>
+        </ion-list>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 </ion-content>
