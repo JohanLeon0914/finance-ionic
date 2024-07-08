@@ -45,6 +45,7 @@ export class TransactionsPage {
     categoryId: 0,
     active: true
   };
+  categoryCache = new Map<string | number, string>();
   repeatOptions: string[] = [
     "NEVER",
     "EVERY DAY",
@@ -80,6 +81,7 @@ export class TransactionsPage {
     this.walletService.getUserWallets().subscribe(
       response => {
         this.userWallets = response.data;
+        console.log(response.data);
       },
       error => {
         console.log(error)
@@ -129,6 +131,23 @@ export class TransactionsPage {
       }
     );
   }
+
+  
+getCategoryById(categoryId: string | number): string {
+  if (this.categoryCache.has(categoryId)) {
+    return this.categoryCache.get(categoryId)!;
+  } else {
+    this.walletService.getCategoryById(categoryId).subscribe(
+      response => {
+        this.categoryCache.set(categoryId, response.data.icon);
+      },
+      error => {
+        console.log(error);
+      }
+    );
+    return ''; 
+  }
+}
 
   getTransactionCategories() {
     this.walletService.getTransactionCategories().subscribe(

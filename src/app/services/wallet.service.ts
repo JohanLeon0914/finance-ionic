@@ -113,6 +113,11 @@ export class WalletService {
     return this.http.get<any>(`${this.apiUrl}/category`, { headers });
   }
 
+  getCategoryById(categoryId): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<any>(`${this.apiUrl}/category/${categoryId}`, { headers });
+  }
+
   createOrUpdateCategory(category: Category, create: boolean): Observable<any> {
     const headers = this.getAuthHeaders();
     if(create) {

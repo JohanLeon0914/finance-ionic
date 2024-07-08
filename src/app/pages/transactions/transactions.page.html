@@ -50,10 +50,12 @@
             <h2>{{ truncateDescription(transaction.description, 30) }}</h2>
             <p>{{ getWalletNameById(transaction.walletId) }}</p>
             <p>{{ currencyFormatter(transaction.amount) }}</p>
+            @if (getCategoryById(transaction.categoryId)) {
+              <ion-icon [name]="getCategoryById(transaction.categoryId)"></ion-icon>
+            }
             @if (transaction.repeat != 'NEVER') {
               <p>{{ transaction.repeat }}</p>
             }
-            <p></p>
           </ion-label>
           <ion-button (click)="editTransaction(transaction)" expand="block" color="success">
             <ion-icon name="pencil-outline"></ion-icon>
