@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Credentials } from 'src/models/credentials.model';
-import { User } from 'src/models/users.model';
+import { UserCredentials } from 'src/models/user.credentials.model';
 
 @Injectable({
   providedIn: 'root'
@@ -43,7 +43,7 @@ export class AuthService {
     );
   }
 
-  signUp(user: User): Observable<any> {
+  signUp(user: UserCredentials): Observable<any> {
     const url = `${this.apiUrl}/auth/register`;
     const headers = new HttpHeaders({
       'Content-Type': 'application/json'
@@ -61,4 +61,29 @@ export class AuthService {
     this.token = '';
     localStorage.removeItem('authToken');
   }
+
+  getUserInfo(): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${this.token}`
+    });
+    return this.http.get<any>(`${this.apiUrl}/users/get_information`, { headers });
+  }
+
+  updateUserAccountInfo(newUserInfo): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${this.token}`
+    });
+    return this.http.patch<any>(`${this.apiUrl}/users/update`,newUserInfo, { headers });
+  } 
+
+  deleteUserAccount(): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${this.token}`
+    });
+    return this.http.delete<any>(`${this.apiUrl}/users/delete_account`, { headers });
+  }
+
 }

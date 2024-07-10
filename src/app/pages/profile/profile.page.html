@@ -6,7 +6,111 @@
 ></app-header>
 
 <ion-content [fullscreen]="true">
+  <ion-card class="profile-card">
+      <ion-card-header class="profile-header">
+        <ion-icon class="profile-icon" name="person-circle-outline"></ion-icon>
+        <ion-card-title>{{ user.name }}</ion-card-title>
+      </ion-card-header>
+    <ion-card-content>
+      <ion-item lines="none">
+        <ion-icon name="mail-outline" slot="start"></ion-icon>
+        <ion-label><b>Email:</b> {{ user.email }}</ion-label>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
+        <ion-label
+          ><b>Email Validated:</b> {{ user.emailValidated ? 'Yes' : 'No' }}</ion-label
+        >
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
 
   <ion-button expand="block" (click)="confirmLogout()">Logout</ion-button>
-  
+  <ion-button expand="block" color="warning"(click)="setOpenUpdateModal(true)" >Update Information</ion-button>
+  <ion-button expand="block" color="danger" id="open-modal-confirm-delete-account" >Delete Account</ion-button>
+
+  <!-- MODAL CONFIRM DELETE ACCOUNT -->
+  <ion-modal trigger="open-modal-confirm-delete-account">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="end">
+            <ion-button (click)="cancel()">
+              <ion-icon name="close-circle-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+          <ion-title>Delete your account</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <ion-list>
+          <form #deleteForm="ngForm" (ngSubmit)="onSubmitDeleteAccount()">
+            <ion-item>
+              <ion-label position="stacked">Confirm Delete</ion-label>
+              <ion-input
+                name="confirmDeleteMessage" 
+                type="text"
+                placeholder="Type 'delete' to delete your account"
+                [(ngModel)]="confirmDeleteMessage"
+                required
+                #nameInput="ngModel"
+              ></ion-input>
+            </ion-item>
+        
+            <ion-button
+              expand="block"
+              type="submit"
+              [disabled]="deleteForm.invalid || !isDeleteMessageValid()"
+              color="danger"
+            >
+              Delete
+            </ion-button>
+          </form>
+        </ion-list>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <!-- MODAL UPDATE ACCOUNT INFO -->
+  <ion-modal [isOpen]="isModalUpdateOpen">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="end">
+            <ion-button (click)="setOpenUpdateModal(false)">
+              <ion-icon name="close-circle-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+          <ion-title>Update your information</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <ion-list>
+          <form #deleteForm="ngForm" (ngSubmit)="onSubmitUpdateAccountInfo()">
+            <ion-item>
+              <ion-label position="stacked">Name</ion-label>
+              <ion-input
+                name="name" 
+                type="text"
+                placeholder="Name"
+                [(ngModel)]="userInfoToUpdate.name"
+                required
+                #nameInput="ngModel"
+              ></ion-input>
+            </ion-item>
+        
+            <ion-button
+              expand="block"
+              type="submit"
+              [disabled]="deleteForm.invalid"
+              color="danger"
+            >
+              Update
+            </ion-button>
+          </form>
+        </ion-list>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
 </ion-content>

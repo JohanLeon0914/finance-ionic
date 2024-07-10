@@ -5,7 +5,7 @@ import { Router, RouterLink } from '@angular/router';
 import { UtilService } from 'src/app/services/utils.service';
 import { FormsModule, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
-import { User } from 'src/models/users.model';
+import { UserCredentials } from 'src/models/user.credentials.model';
 import { cloudyNight } from 'ionicons/icons';
 
 @Component({
@@ -35,7 +35,7 @@ export class SignUpComponent implements OnInit {
 
     this.utilsSvc.presentLoading();
 
-    const user: User = {
+    const user: UserCredentials = {
       email: this.email,
       name: this.name,
       password: this.password
