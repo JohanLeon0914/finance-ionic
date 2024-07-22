@@ -164,13 +164,13 @@
                       [disabled]="budgetSelected.id"
                       label="Select a wallet"
                       label-placement="floating"
-                      [(ngModel)]="walletsIds"
+                      [(ngModel)]="budgetSelected.wallets"
                       name="idWalletSelected"
                       required
                       #walletSelect="ngModel"
                     >
                       @for (wallet of userWallets; track $index) {
-                      <ion-select-option [value]="wallet.id">
+                      <ion-select-option [value]="wallet.id + ''">
                         {{ wallet.name }}
                       </ion-select-option>
                       }

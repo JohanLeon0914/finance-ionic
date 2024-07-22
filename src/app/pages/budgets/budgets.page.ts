@@ -186,7 +186,6 @@ export class BudgetsPage implements OnInit {
       this.createOrUpdateCategory(budget, false, form);
     } else {
       this.budgetSelected.categories = this.joinIds(this.categoriesIds);
-      this.budgetSelected.wallets = this.joinIds(this.walletsIds);
       this.createOrUpdateCategory(this.budgetSelected, true, form);
     }
   }
@@ -206,10 +205,15 @@ export class BudgetsPage implements OnInit {
     return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
   }
 
-  truncateText(description: string, maxLength: number): string {
+  truncateText(description: string | null | undefined, maxLength: number): string {
+    if (description == null) {
+      return '';
+    }
+  
     if (description.length > maxLength) {
       return description.slice(0, maxLength) + '...';
     }
+  
     return description;
   }
 
