@@ -1,42 +1,67 @@
 ion-list {
-    padding-top: 20px;
-  }
-  
-  ion-item {
-    margin-bottom: 16px;
-  }
-  
-  ion-button {
-    margin: 15px;
-  }
-
-.icon-amount {
-  margin-right: 10px;
+  padding-top: 20px;
 }
 
-.custom-card {
-  background-color: #000; 
-  border-radius: 10px; 
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+ion-item {
+  margin-bottom: 16px;
+  --background: transparent;
 }
 
-.custom-card ion-card-content {
-  padding: 16px; 
+ion-card.custom-card {
+  width: 100%;
+  background-color: #1e1e1e;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease-in-out;
+}
+
+ion-card.custom-card:hover {
+  transform: scale(1.02);
 }
 
 .custom-card ion-card-header {
-  border-bottom: 1px solid #ccc; 
+  padding: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.custom-card ion-row ion-button {
-  --background: #4caf50; 
-  --background-activated: #388e3c; 
-  --background-focused: #4caf50; 
+.custom-card ion-card-title {
+  font-size: 1.2em;
+  color: #fff;
 }
 
-.custom-card ion-row ion-button[color="danger"] {
-  --background: #f44336;
-  --background-activated: #d32f2f; 
-  --background-focused: #f44336; 
+.custom-card ion-card-subtitle {
+  font-size: 0.9em;
+  color: #ccc;
 }
-  
+
+.custom-card ion-card-content {
+  padding: 16px;
+  color: #fff;
+}
+
+.custom-card ion-icon {
+  color: #ffd700; /* Oro */
+  margin-right: 8px;
+}
+
+.custom-card ion-item {
+  --background: transparent;
+}
+
+.custom-card ion-label {
+  font-size: 0.95em;
+}
+
+.custom-card ion-item hr {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 8px 0;
+}
+
+.custom-card ion-item span {
+  display: block;
+  margin-top: 4px;
+}
+
+ion-button {
+  padding: 10px 25px; 
+}

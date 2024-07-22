@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
-import { IonRow, IonCardSubtitle, IonModal, IonHeader, IonIcon, IonToolbar, IonTitle, IonContent, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonList, IonItem, IonSelect, IonButtons, IonInput, IonSelectOption, IonLabel, IonCheckbox, IonText, IonCol } from '@ionic/angular/standalone';
+import { IonRow, IonCardSubtitle, IonModal, IonHeader, IonIcon, IonToolbar, IonTitle, IonContent, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonList, IonItem, IonSelect, IonButtons, IonInput, IonSelectOption, IonLabel, IonCheckbox, IonText, IonCol, IonGrid } from '@ionic/angular/standalone';
 import { AuthService } from 'src/app/services/auth.service';
 import { UtilService } from 'src/app/services/utils.service';
 import { Subscription } from 'rxjs';
@@ -20,7 +20,7 @@ import { Wallet } from 'src/models/wallet.model';
   templateUrl: './budgets.page.html',
   styleUrls: ['./budgets.page.scss'],
   standalone: true,
-  imports: [IonRow, IonCol, IonCardSubtitle, IonModal, IonIcon, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonList, IonItem, IonSelect, IonButtons, IonInput, IonSelectOption, IonLabel, IonCheckbox, IonText, HeaderComponent]
+  imports: [IonGrid, IonRow, IonCol, IonCardSubtitle, IonModal, IonIcon, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonList, IonItem, IonSelect, IonButtons, IonInput, IonSelectOption, IonLabel, IonCheckbox, IonText, HeaderComponent]
 })
 export class BudgetsPage implements OnInit {
 
@@ -125,7 +125,7 @@ export class BudgetsPage implements OnInit {
     )
   }
 
-  confirmDeleteBudget(budget: Budget) {
+  confirmDeleteBudget() {
     this.utilsSvc.presentAlert({
       header: 'Delete category!',
       message: 'Are you sure you want to delete this budget?',
@@ -138,7 +138,7 @@ export class BudgetsPage implements OnInit {
         {
           text: 'Yes, delete it',
           handler: () => {
-            this.deleteBudget(budget);
+            this.deleteBudget(this.budgetSelected);
           },
         },
       ],
@@ -171,7 +171,8 @@ export class BudgetsPage implements OnInit {
         console.log(error)
       }
     )
-    this.utilsSvc.presentLoading();
+    this.utilsSvc.dismissLoading();
+    this.cancel();
   }
 
   onSubmit(form: NgForm) {
