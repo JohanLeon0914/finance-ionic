@@ -53,7 +53,7 @@
             @if (getCategoryById(transaction.categoryId)) {
               <ion-icon [name]="getCategoryById(transaction.categoryId)"></ion-icon>
             }
-            @if (transaction.repeat != 'NEVER') {
+            @if (transaction.repeat !== 'NEVER') {
               <p>{{ transaction.repeat }}</p>
             }
           </ion-label>

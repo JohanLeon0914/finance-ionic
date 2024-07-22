@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
-import { IonRow,IonCardSubtitle, IonModal, IonHeader, IonIcon, IonToolbar, IonTitle, IonContent, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonList, IonItem, IonSelect, IonButtons, IonInput, IonSelectOption, IonLabel, IonCheckbox, IonText, IonCol } from '@ionic/angular/standalone';
+import { IonRow, IonCardSubtitle, IonModal, IonHeader, IonIcon, IonToolbar, IonTitle, IonContent, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonList, IonItem, IonSelect, IonButtons, IonInput, IonSelectOption, IonLabel, IonCheckbox, IonText, IonCol } from '@ionic/angular/standalone';
 import { AuthService } from 'src/app/services/auth.service';
 import { UtilService } from 'src/app/services/utils.service';
 import { Subscription } from 'rxjs';
@@ -11,13 +11,16 @@ import { alertCircleOutline, calendarClearOutline, checkmarkCircleOutline, close
 import { BudgetService } from 'src/app/services/budget.service';
 import { Budget } from 'src/models/budget.model';
 import { HeaderComponent } from 'src/app/shared/components/header/header.component';
+import { Category } from 'src/models/category.model';
+import { WalletService } from 'src/app/services/wallet.service';
+import { Wallet } from 'src/models/wallet.model';
 
 @Component({
   selector: 'app-budgets',
   templateUrl: './budgets.page.html',
   styleUrls: ['./budgets.page.scss'],
   standalone: true,
-  imports: [IonRow, IonCol, IonCardSubtitle,IonModal, IonIcon, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonList, IonItem, IonSelect, IonButtons, IonInput, IonSelectOption, IonLabel, IonCheckbox, IonText, HeaderComponent]
+  imports: [IonRow, IonCol, IonCardSubtitle, IonModal, IonIcon, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonList, IonItem, IonSelect, IonButtons, IonInput, IonSelectOption, IonLabel, IonCheckbox, IonText, HeaderComponent]
 })
 export class BudgetsPage implements OnInit {
 
@@ -28,14 +31,33 @@ export class BudgetsPage implements OnInit {
   router = inject(Router)
   budgetService = inject(BudgetService)
   budgets: Budget[] = [];
+  categories: Category[] = [];
+  userWallets: Wallet[] = [];
+  repeatOptions: string[] = [
+    "NEVER",
+    "EVERY DAY",
+    "EVERY WEEK",
+    "EVERY TWO WEEKS",
+    "EVERY MONTH",
+    "EVERY TWO MONTHS",
+    "EVERY THREE MONTHS",
+    "EVERY SIX MONTHS",
+    "EVERY YEAR"
+  ];
   budgetSelected: Budget = {
-    amount: 0,
+    limit_amount: 0,
+    current_amount: 0,
+    repeat: '',
+    categories: '',
+    wallets: '',
     description: '',
     end_date: '',
     initial_date: '',
     name: '',
-    userId: '',
   };
+  walletService = inject(WalletService)
+  walletsIds: string[] = [];
+  categoriesIds: string[] = [];
 
   constructor() {
     addIcons({ pricetagOutline, closeCircleOutline, checkmarkCircleOutline, alertCircleOutline, pencilOutline, trashOutline, calendarClearOutline })
@@ -52,10 +74,36 @@ export class BudgetsPage implements OnInit {
 
   ngOnInit(): void {
     this.getUserBudgets();
+    this.getTransactionCategories();
+    this.getUserWallets();
     this.subscription = this.authService._refresh$.subscribe(
       () => {
         this.getUserBudgets();
+        this.getTransactionCategories();
+        this.getUserWallets();
       })
+  }
+
+  getUserWallets() {
+    this.walletService.getUserWallets().subscribe(
+      response => {
+        this.userWallets = response.data;
+      },
+      error => {
+        console.log(error)
+      }
+    )
+  }
+
+  getTransactionCategories() {
+    this.walletService.getTransactionCategories().subscribe(
+      response => {
+        this.categories = response.data;
+      },
+      error => {
+        console.log(error)
+      }
+    )
   }
 
   getUserBudgets() {
@@ -90,35 +138,66 @@ export class BudgetsPage implements OnInit {
         {
           text: 'Yes, delete it',
           handler: () => {
-            // this.deleteCategory(category)
+            this.deleteBudget(budget);
           },
         },
       ],
     })
   }
 
-  onSubmit(form: NgForm) {
-    if (form.valid) {
-      console.log(this.budgetSelected)
-      if (this.budgetSelected.id) {
-        const budget: Budget = {
-          name: this.budgetSelected.name,
-          id: this.budgetSelected.id,
-          description: this.budgetSelected.description,
-          initial_date: this.budgetSelected.initial_date,
-          end_date: this.budgetSelected.end_date,
-          amount: this.budgetSelected.amount,
-          userId: this.budgetSelected.userId,
-        }
-        this.createOrUpdateCategory(budget, false, form);
-      } else {
-        this.createOrUpdateCategory(this.budgetSelected, true, form);
+  deleteBudget(budget: Budget) {
+    this.utilsSvc.presentLoading();
+    this.budgetService.deleteBudget(budget).subscribe(
+      () => {
+        this.utilsSvc.dismissLoading();
+        this.utilsSvc.presentToast({
+          message: 'Budget Deleted Success',
+          color: 'success',
+          position: 'top',
+          icon: 'checkmark-circle-outline',
+          duration: 2000,
+        });
+        this.getUserBudgets();
+      },
+      error => {
+        this.utilsSvc.presentToast({
+          message: `Error: ${error.error.data}`,
+          color: 'warning',
+          position: 'top',
+          icon: 'alert-circle-outline',
+          duration: 2000,
+        });
+        this.utilsSvc.dismissLoading();
+        console.log(error)
       }
+    )
+    this.utilsSvc.presentLoading();
+  }
+
+  onSubmit(form: NgForm) {
+    if (this.budgetSelected.id) {
+      const budget: Budget = {
+        id: this.budgetSelected.id,
+        name: this.budgetSelected.name,
+        description: this.budgetSelected.description,
+        limit_amount: this.budgetSelected.limit_amount,
+        repeat: this.budgetSelected.repeat,
+      }
+      this.createOrUpdateCategory(budget, false, form);
+    } else {
+      this.budgetSelected.categories = this.joinIds(this.categoriesIds);
+      this.budgetSelected.wallets = this.joinIds(this.walletsIds);
+      this.createOrUpdateCategory(this.budgetSelected, true, form);
     }
+  }
+
+  joinIds(ids: string[]): string {
+    return ids.join(',');
   }
 
   editBudget(budget: Budget) {
     this.budgetSelected = budget;
+    console.log(budget)
     this.modal.present();
   }
 
@@ -166,12 +245,16 @@ export class BudgetsPage implements OnInit {
   }
   cancel() {
     this.budgetSelected = {
-      amount: 0,
+      limit_amount: 0,
+      current_amount: 0,
+      repeat: '',
+      categories: '',
+      wallets: '',
+      id: '',
       description: '',
       end_date: '',
       initial_date: '',
       name: '',
-      userId: '',
     }
     this.modal.dismiss(null, 'cancel');
   }

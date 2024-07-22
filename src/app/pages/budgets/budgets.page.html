@@ -11,7 +11,7 @@
     <ion-icon slot="end" name="pricetag-outline"></ion-icon>
     Create a budget
   </ion-button>
-  @if (!budgets.length) {
+  @if (!budgets) {
     <ion-card>
       <ion-card-header>
         <ion-card-title>No Categories Found</ion-card-title>
@@ -25,15 +25,15 @@
         @for (budget of budgets; track $index) {
             <ion-card class="custom-card">
               <ion-card-header>
-                <ion-card-title>{{ truncateText(budget.name, 10) }}</ion-card-title>
-                <ion-card-subtitle>{{ truncateText(budget.description, 20) }}</ion-card-subtitle>
+                <ion-card-title>{{ truncateText(budget.name, 20) }}</ion-card-title>
+                <ion-card-subtitle>{{ truncateText(budget.description, 30) }}</ion-card-subtitle>
               </ion-card-header>
             
               <ion-card-content>
                 <ion-item>
                   <ion-label>
                     <ion-icon class="icon-amount" name="wallet-outline"></ion-icon>
-                    <span>{{ currencyFormatter(budget.amount) }}</span>
+                    <span>{{ currencyFormatter(budget.limit_amount) }}</span>
                   </ion-label>
                 </ion-item>
                 
@@ -105,7 +105,7 @@
 
                   <ion-item>
                     <ion-label position="stacked">Initial Date</ion-label>
-                    <ion-input name="budgetInitialDate" type="date" placeholder="Initial Date" 
+                    <ion-input [disabled]="budgetSelected.id" name="budgetInitialDate" type="date" placeholder="Initial Date" 
                       [(ngModel)]="budgetSelected.initial_date" required #initialDateInput="ngModel"></ion-input>
                     @if (initialDateInput.invalid && initialDateInput.touched) {
                       <ion-text color="danger">Please enter a initial date.</ion-text>
@@ -114,7 +114,7 @@
 
                   <ion-item>
                     <ion-label position="stacked">End Date</ion-label>
-                    <ion-input name="budgetEndDate" type="date" placeholder="End Date" 
+                    <ion-input [disabled]="budgetSelected.id" name="budgetEndDate" type="date" placeholder="End Date" 
                       [(ngModel)]="budgetSelected.end_date" required #endDateInput="ngModel"></ion-input>
                     @if (endDateInput.invalid && endDateInput.touched) {
                       <ion-text color="danger">Please enter a end date.</ion-text>
@@ -122,15 +122,87 @@
                   </ion-item>
 
                   <ion-item>
-                    <ion-label position="stacked">Amount</ion-label>
-                    <ion-input name="budgetAmount" type="number" placeholder="Budget Amount" 
-                      [(ngModel)]="budgetSelected.amount" required #amountInput="ngModel"></ion-input>
-                    @if (amountInput.invalid && amountInput.touched) {
-                      <ion-text color="danger">Please enter an amount.</ion-text>
+                    <ion-label position="stacked">Limit Amount</ion-label>
+                    <ion-input name="budgetLimitAmount" type="number" placeholder="Limit Amount" 
+                      [(ngModel)]="budgetSelected.limit_amount" required #limitAmountInput="ngModel"></ion-input>
+                    @if (limitAmountInput.invalid && limitAmountInput.touched) {
+                      <ion-text color="danger">Please enter a limit amount.</ion-text>
                     }
                   </ion-item>
 
-                  <ion-button expand="block" type="submit" [disabled]="budgetForm.invalid">
+                  <ion-item>
+                    <ion-label position="stacked">Current Amount</ion-label>
+                    <ion-input [disabled]="budgetSelected.id" name="budgetCurrentAmount" type="number" placeholder="Current Amount" 
+                      [(ngModel)]="budgetSelected.current_amount" required #currentAmountInput="ngModel"></ion-input>
+                    @if (currentAmountInput.invalid && currentAmountInput.touched) {
+                      <ion-text color="danger">Please enter a current amount.</ion-text>
+                    }
+                  </ion-item>
+
+                  <ion-item>
+                    <ion-select
+                      label="Repeat options"
+                      label-placement="floating"
+                      [(ngModel)]="budgetSelected.repeat"
+                      name="repeat"
+                      required
+                      #repeatSelect="ngModel"
+                    >
+                      @for (option of repeatOptions; track $index) {
+                      <ion-select-option [value]="option">
+                        {{ option }}
+                      </ion-select-option>
+                      }
+                    </ion-select>
+                    @if (repeatSelect.invalid && repeatSelect.touched) {
+                    <ion-text color="danger">Select a repeat option.</ion-text>
+                    }
+                  </ion-item>
+
+                  <ion-item>
+                    <ion-select
+                      [disabled]="budgetSelected.id"
+                      label="Select a wallet"
+                      label-placement="floating"
+                      [(ngModel)]="walletsIds"
+                      name="idWalletSelected"
+                      required
+                      #walletSelect="ngModel"
+                    >
+                      @for (wallet of userWallets; track $index) {
+                      <ion-select-option [value]="wallet.id">
+                        {{ wallet.name }}
+                      </ion-select-option>
+                      }
+                    </ion-select>
+                    @if (walletSelect.invalid && walletSelect.touched) {
+                    <ion-text color="danger">Please select a wallet.</ion-text>
+                    }
+                  </ion-item>
+
+                  <ion-item>
+                    <ion-select
+                      [disabled]="budgetSelected.id"
+                      label="Select a category"
+                      label-placement="floating"
+                      [(ngModel)]="categoriesIds"
+                      name="transactionCategory"
+                      required
+                      #categorySelect="ngModel"
+                      [multiple]="true"
+                    >
+                      @for (category of categories; track $index) {
+                      <ion-select-option [value]="category.id">
+                        {{ category.name }}
+                      </ion-select-option>
+                      }
+                    </ion-select>
+                    @if (categorySelect.invalid && categorySelect.touched) {
+                    <ion-text color="danger">Select a category.</ion-text>
+                    }
+                  </ion-item>
+
+                  <ion-button expand="block" type="submit" [disabled]="budgetForm.invalid && !budgetSelected.id">
                     @if (budgetSelected.id) { Update } @else { Create }
                   </ion-button>
                 </form>

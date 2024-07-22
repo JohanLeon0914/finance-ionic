@@ -81,7 +81,6 @@ export class TransactionsPage {
     this.walletService.getUserWallets().subscribe(
       response => {
         this.userWallets = response.data;
-        console.log(response.data);
       },
       error => {
         console.log(error)

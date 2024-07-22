@@ -41,13 +41,25 @@ export class BudgetService {
         })
       );
     } 
-    return this.http.patch<any>(`${this.apiUrl}/budget/${budget.id}`, budget, { headers }).pipe(
+    const { id, ...data } = budget;
+    return this.http.patch<any>(`${this.apiUrl}/budget/${budget.id}`, data, { headers }).pipe(
       tap(response => {
         if (response) {
           this.authService._refresh$.next()
         }
       })
     );
+  }
+
+  deleteBudget(budget: Budget): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.delete<any>(`${this.apiUrl}/budget/${budget.id}`, { headers }).pipe(
+      tap(response => {
+        if (response) {
+          this.authService._refresh$.next()
+        }
+      })
+    );;
   }
 
 }
