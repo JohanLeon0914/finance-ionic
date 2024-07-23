@@ -1,6 +1,5 @@
-import { group, transition } from '@angular/animations';
 import { NgClass } from '@angular/common';
-import { Component, ViewChild, inject } from '@angular/core';
+import { Component, ViewChild, inject, OnInit } from '@angular/core';
 import { FormsModule, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IonModal, IonHeader, IonIcon, IonToolbar, IonTitle, IonContent, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonList, IonItem, IonSelect, IonButtons, IonInput, IonSelectOption, IonLabel, IonCheckbox, IonText, IonDatetime, IonItemDivider, IonRow, IonGrid } from '@ionic/angular/standalone';
@@ -22,7 +21,7 @@ import { Wallet } from 'src/models/wallet.model';
   standalone: true,
   imports: [NgClass, IonGrid, IonRow, IonItemDivider, IonDatetime, IonText, IonCheckbox, IonLabel, FormsModule, ReactiveFormsModule, IonInput, IonButtons, IonModal, IonCardContent, IonIcon, IonHeader, IonToolbar, IonTitle, IonContent, HeaderComponent, IonButton, IonCard, IonCardHeader, IonCardTitle, IonList, IonItem, IonSelect, IonSelectOption],
 })
-export class TransactionsPage {
+export class TransactionsPage implements OnInit {
 
   @ViewChild(IonModal) modal: IonModal;
   authService = inject(AuthService)
