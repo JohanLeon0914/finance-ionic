@@ -10,6 +10,30 @@ ion-button {
   margin: 15px;
 }
 
+ion-icon {
+  margin-left: 10px;
+}
+
 .ionitem-filter {
   margin-top: 15px;
+}
+
+.category-information {
+  display: flex;
+  flex: 1;
+  color: #007bff
+}
+
+.income {
+  color: #28a745; 
+  font-weight: bold; 
+}
+
+.outflow {
+  color: #dc3545; 
+  font-weight: bold;
+}
+
+.transaction-information-label {
+  margin-right: 25px;
 }

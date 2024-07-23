@@ -1,8 +1,9 @@
 import { group, transition } from '@angular/animations';
+import { NgClass } from '@angular/common';
 import { Component, ViewChild, inject } from '@angular/core';
 import { FormsModule, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { IonModal, IonHeader, IonIcon, IonToolbar, IonTitle, IonContent, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonList, IonItem, IonSelect, IonButtons, IonInput, IonSelectOption, IonLabel, IonCheckbox, IonText, IonDatetime, IonItemDivider } from '@ionic/angular/standalone';
+import { IonModal, IonHeader, IonIcon, IonToolbar, IonTitle, IonContent, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonList, IonItem, IonSelect, IonButtons, IonInput, IonSelectOption, IonLabel, IonCheckbox, IonText, IonDatetime, IonItemDivider, IonRow, IonGrid } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { alertCircleOutline, cashOutline, checkmarkCircleOutline, closeCircleOutline, pencilOutline, trashOutline } from 'ionicons/icons';
 import { Subscription } from 'rxjs';
@@ -19,7 +20,7 @@ import { Wallet } from 'src/models/wallet.model';
   templateUrl: 'transactions.page.html',
   styleUrls: ['transactions.page.scss'],
   standalone: true,
-  imports: [IonItemDivider, IonDatetime, IonText, IonCheckbox, IonLabel, FormsModule, ReactiveFormsModule, IonInput, IonButtons, IonModal, IonCardContent, IonIcon, IonHeader, IonToolbar, IonTitle, IonContent, HeaderComponent, IonButton, IonCard, IonCardHeader, IonCardTitle, IonList, IonItem, IonSelect, IonSelectOption],
+  imports: [NgClass, IonGrid, IonRow, IonItemDivider, IonDatetime, IonText, IonCheckbox, IonLabel, FormsModule, ReactiveFormsModule, IonInput, IonButtons, IonModal, IonCardContent, IonIcon, IonHeader, IonToolbar, IonTitle, IonContent, HeaderComponent, IonButton, IonCard, IonCardHeader, IonCardTitle, IonList, IonItem, IonSelect, IonSelectOption],
 })
 export class TransactionsPage {
 
@@ -45,7 +46,7 @@ export class TransactionsPage {
     categoryId: 0,
     active: true
   };
-  categoryCache = new Map<string | number, string>();
+  categoryCache = new Map<string | number, Category>();
   repeatOptions: string[] = [
     "NEVER",
     "EVERY DAY",
@@ -132,21 +133,22 @@ export class TransactionsPage {
   }
 
   
-getCategoryById(categoryId: string | number): string {
-  if (this.categoryCache.has(categoryId)) {
-    return this.categoryCache.get(categoryId)!;
-  } else {
-    this.walletService.getCategoryById(categoryId).subscribe(
-      response => {
-        this.categoryCache.set(categoryId, response.data.icon);
-      },
-      error => {
-        console.log(error);
-      }
-    );
-    return ''; 
+  getCategoryById(categoryId: string | number): Category | undefined {
+    if (this.categoryCache.has(categoryId)) {
+      return this.categoryCache.get(categoryId)!;
+    } else {
+      this.walletService.getCategoryById(categoryId).subscribe(
+        response => {
+          const category: Category = response.data;
+          this.categoryCache.set(categoryId, category);
+        },
+        error => {
+          console.log(error);
+        }
+      );
+      return undefined; 
+    }
   }
-}
 
   getTransactionCategories() {
     this.walletService.getTransactionCategories().subscribe(
@@ -173,7 +175,7 @@ getCategoryById(categoryId: string | number): string {
     this.modal.present();
   }
 
-  confirmDeleteTransaction(transaction: Transaction) {
+  confirmDeleteTransaction() {
     this.utilsSvc.presentAlert({
       header: 'Delete transaction!',
       message: 'Are you sure you want to delete this transaction?',
@@ -186,7 +188,7 @@ getCategoryById(categoryId: string | number): string {
         {
           text: 'Yes, delete it',
           handler: () => {
-            this.deleteTransaction(transaction)
+            this.deleteTransaction(this.transactionSelected)
           },
         },
       ],

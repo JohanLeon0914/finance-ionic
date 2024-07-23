@@ -39,33 +39,32 @@
   } @else {
   <ion-list>
     @for (group of groupTransitionsByDates; track $index) {
-      <ion-item-divider sticky>
-        <ion-label>
-          {{ group.date }}
-        </ion-label>
-      </ion-item-divider>
-      @for (transaction of group.transactions; track $index) {
-        <ion-item>
-          <ion-label>
-            <h2>{{ truncateDescription(transaction.description, 30) }}</h2>
-            <p>{{ getWalletNameById(transaction.walletId) }}</p>
-            <p>{{ currencyFormatter(transaction.amount) }}</p>
-            @if (getCategoryById(transaction.categoryId)) {
-              <ion-icon [name]="getCategoryById(transaction.categoryId)"></ion-icon>
-            }
-            @if (transaction.repeat !== 'NEVER') {
-              <p>{{ transaction.repeat }}</p>
-            }
-          </ion-label>
-          <ion-button (click)="editTransaction(transaction)" expand="block" color="success">
-            <ion-icon name="pencil-outline"></ion-icon>
-          </ion-button>
-          <ion-button (click)="confirmDeleteTransaction(transaction)" expand="block" color="danger">
-            <ion-icon name="trash-outline"></ion-icon>
-          </ion-button>
-        </ion-item>
-      }
-    }
+    <ion-item-divider sticky>
+      <ion-label> {{ group.date }} </ion-label>
+    </ion-item-divider>
+    @for (transaction of group.transactions; track $index) {
+    <ion-item>
+      <ion-label class="transaction-information-label">
+        <h2>{{ truncateDescription(transaction.description, 20) }}</h2>
+        <p>{{ getWalletNameById(transaction.walletId) }}</p>
+        <p [ngClass]="{'income': transaction.type === 'INCOME', 'outflow': transaction.type === 'OUTFLOW'}">
+          {{ currencyFormatter(transaction.amount) }}
+        </p>
+      </ion-label>
+      <ion-label>
+        @if (getCategoryById(transaction.categoryId)) {
+        <div class="category-information">
+          <p>{{ getCategoryById(transaction.categoryId).name }}</p>
+          <ion-icon
+            [name]="getCategoryById(transaction.categoryId).icon"
+          ></ion-icon>
+        </div>
+        } @if (transaction.repeat !== 'NEVER') {
+        <p>{{ transaction.repeat }}</p>
+        }
+      </ion-label>
+    </ion-item>
+    } }
   </ion-list>
   }
 
@@ -246,6 +245,14 @@
               [disabled]="transactionForm.invalid"
             >
               @if (transactionSelected.id) { Update } @else { Create }
+            </ion-button>
+            <ion-button
+              (click)="confirmDeleteTransaction()"
+              expand="block"
+              color="danger"
+            >
+              Delete
+              <ion-icon name="trash-outline"></ion-icon>
             </ion-button>
           </form>
         </ion-list>
