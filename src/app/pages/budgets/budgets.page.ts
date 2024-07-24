@@ -197,7 +197,6 @@ export class BudgetsPage implements OnInit {
 
   editBudget(budget: Budget) {
     this.budgetSelected = budget;
-    console.log(budget)
     this.modal.present();
   }
 
