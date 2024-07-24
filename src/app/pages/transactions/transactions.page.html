@@ -44,25 +44,34 @@
     </ion-item-divider>
     @for (transaction of group.transactions; track $index) {
     <ion-item>
-      <ion-label class="transaction-information-label">
-        <h2>{{ truncateDescription(transaction.description, 20) }}</h2>
-        <p>{{ getWalletNameById(transaction.walletId) }}</p>
-        <p [ngClass]="{'income': transaction.type === 'INCOME', 'outflow': transaction.type === 'OUTFLOW'}">
-          {{ currencyFormatter(transaction.amount) }}
-        </p>
-      </ion-label>
-      <ion-label>
-        @if (getCategoryById(transaction.categoryId)) {
-        <div class="category-information">
-          <p>{{ getCategoryById(transaction.categoryId).name }}</p>
-          <ion-icon
-            [name]="getCategoryById(transaction.categoryId).icon"
-          ></ion-icon>
-        </div>
-        } @if (transaction.repeat !== 'NEVER') {
-        <p>{{ transaction.repeat }}</p>
-        }
-      </ion-label>
+      <ion-card>
+        <ion-card-header>
+          <ion-item lines="none">
+            <ion-label>
+              <h2>{{ truncateDescription(transaction.description, 30) }}</h2>
+            </ion-label>
+            {{''}}
+            @if (getCategoryById(transaction.categoryId)) {
+              <ion-icon
+                [name]="getCategoryById(transaction.categoryId).icon"
+              ></ion-icon>
+              }
+          </ion-item>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-item lines="none">
+            <ion-label>
+              @if (getCategoryById(transaction.categoryId)) {
+                <p class="category">Category: {{ getCategoryById(transaction.categoryId).name }}</p>
+              }
+              <p class="category"><b>Wallet: {{''}} </b>{{ getWalletNameById(transaction.walletId) }}</p>
+              <p [ngClass]="{'income': transaction.type === 'INCOME', 'outflow': transaction.type === 'OUTFLOW'}">
+                {{ currencyFormatter(transaction.amount) }}
+              </p>
+            </ion-label>
+          </ion-item>
+        </ion-card-content>
+      </ion-card>
     </ion-item>
     } }
   </ion-list>
