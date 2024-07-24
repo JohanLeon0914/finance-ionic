@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
-import { IonRow, IonCardSubtitle, IonModal, IonHeader, IonIcon, IonToolbar, IonTitle, IonContent, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonList, IonItem, IonSelect, IonButtons, IonInput, IonSelectOption, IonLabel, IonCheckbox, IonText, IonCol, IonGrid } from '@ionic/angular/standalone';
+import { IonRow, IonCardSubtitle, IonModal, IonHeader, IonIcon, IonToolbar, IonTitle, IonContent, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonList, IonItem, IonSelect, IonButtons, IonInput, IonSelectOption, IonLabel, IonCheckbox, IonText, IonCol, IonGrid, IonChip } from '@ionic/angular/standalone';
 import { AuthService } from 'src/app/services/auth.service';
 import { UtilService } from 'src/app/services/utils.service';
 import { Subscription } from 'rxjs';
@@ -20,7 +20,7 @@ import { Wallet } from 'src/models/wallet.model';
   templateUrl: './budgets.page.html',
   styleUrls: ['./budgets.page.scss'],
   standalone: true,
-  imports: [IonGrid, IonRow, IonCol, IonCardSubtitle, IonModal, IonIcon, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonList, IonItem, IonSelect, IonButtons, IonInput, IonSelectOption, IonLabel, IonCheckbox, IonText, HeaderComponent]
+  imports: [IonChip, IonGrid, IonRow, IonCol, IonCardSubtitle, IonModal, IonIcon, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonList, IonItem, IonSelect, IonButtons, IonInput, IonSelectOption, IonLabel, IonCheckbox, IonText, HeaderComponent]
 })
 export class BudgetsPage implements OnInit {
 
@@ -210,12 +210,23 @@ export class BudgetsPage implements OnInit {
     if (description == null) {
       return '';
     }
-  
+
     if (description.length > maxLength) {
       return description.slice(0, maxLength) + '...';
     }
-  
+
     return description;
+  }
+
+  calculateBudgetConsumptionPercentage(current_amount: number, limit_amount: number): number {
+    if (limit_amount === 0) {
+      return 0;
+    }
+    return (current_amount / limit_amount) * 100;
+  }
+
+  getPercentage(budget: Budget): string {
+    return this.calculateBudgetConsumptionPercentage(budget.current_amount, budget.limit_amount).toFixed(2) + '%';
   }
 
   createOrUpdateCategory(budget: Budget, create: boolean, form: NgForm) {

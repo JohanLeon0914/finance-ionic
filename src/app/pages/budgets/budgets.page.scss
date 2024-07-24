@@ -3,65 +3,62 @@ ion-list {
 }
 
 ion-item {
-  margin-bottom: 16px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   --background: transparent;
 }
 
-ion-card.custom-card {
-  width: 100%;
+ion-card {
   background-color: #312d2d;
-  border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  transition: transform 0.2s ease-in-out;
+  margin: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
+  width: 100%;
 }
 
-ion-card.custom-card:hover {
-  transform: scale(1.02);
+ion-card-header {
+  background-color: #f8f1e5;
 }
 
-.custom-card ion-card-header {
-  padding: 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+ion-card-title {
+  color: #0056b3;
 }
 
-.custom-card ion-card-title {
-  font-size: 1.2em;
-  color: #fff;
-}
-
-.custom-card ion-card-subtitle {
-  font-size: 0.9em;
-  color: #ccc;
-}
-
-.custom-card ion-card-content {
-  padding: 16px;
-  color: #fff;
-}
-
-.custom-card ion-icon {
-  color: #ffd700; /* Oro */
-  margin-right: 8px;
-}
-
-.custom-card ion-item {
-  --background: transparent;
-}
-
-.custom-card ion-label {
-  font-size: 0.95em;
-}
-
-.custom-card ion-item hr {
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  margin: 8px 0;
-}
-
-.custom-card ion-item span {
-  display: block;
-  margin-top: 4px;
+ion-card-subtitle {
+  color: #333333;
 }
 
 ion-button {
   padding: 10px 25px;
+}
+
+ion-card:hover {
+  transform: translateY(-5px);
+}
+
+.total {
+  color: #007bff;
+}
+
+.percentageText {
+  margin-top: 10px;
+  font-size: 1.0em;
+}
+
+.progress-bar-container {
+  width: 100%;
+  background-color: #e0e0e0;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 10px;
+  background-color: #3b82f6;
+  border-radius: 5px;
+}
+
+.progress-text {
+  text-align: center;
+  font-size: 0.9em;
 }

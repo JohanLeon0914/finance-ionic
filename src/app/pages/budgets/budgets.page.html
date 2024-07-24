@@ -23,45 +23,25 @@
     <ion-list>
       @for (budget of budgets; track $index) {
         <ion-item button (click)="editBudget(budget)">
-          <ion-card class="custom-card">
+          <ion-card>
             <ion-card-header>
               <ion-card-title>{{ truncateText(budget.name, 20) }}</ion-card-title>
-              <ion-card-subtitle>
-                {{ truncateText(budget.description, 30) }}
-              </ion-card-subtitle>
+              <ion-card-subtitle>Initial Date: {{ formatedDate(budget.initial_date) }}</ion-card-subtitle>
+              <ion-card-subtitle>End Date: {{ formatedDate(budget.end_date) }}</ion-card-subtitle>
             </ion-card-header>
-    
             <ion-card-content>
-              <ion-grid>
-                <ion-row>
-                  <ion-col>
-                    <ion-item lines="none">
-                      <ion-label>
-                        <span>Current: {{ currencyFormatter(budget.current_amount) }}</span>
-                      </ion-label>
-                    </ion-item>
-                  </ion-col>
-                  <ion-col>
-                    <ion-item lines="none">
-                      <ion-label>
-                        <span>Limit: {{ currencyFormatter(budget.limit_amount) }}</span>
-                      </ion-label>
-                    </ion-item>
-                  </ion-col>
-                </ion-row>
-              </ion-grid>
-    
               <ion-item lines="none">
-                <ion-icon class="icon-amount" name="calendar-clear-outline"></ion-icon>
                 <ion-label>
-                  <span><b>Initial Date:</b> {{ formatedDate(budget.initial_date) }}</span>
+                  <p>Total Amount: <b class="total"> {{ currencyFormatter(budget.current_amount) }} </b></p>
+                  <p>Limit Amount: <b class="total"> {{ currencyFormatter(budget.limit_amount) }} </b></p>
                 </ion-label>
               </ion-item>
-    
               <ion-item lines="none">
-                <ion-icon class="icon-amount" name="calendar-clear-outline"></ion-icon>
                 <ion-label>
-                  <span><b>End Date:</b> {{ formatedDate(budget.end_date) }}</span>
+                  <div class="progress-bar-container">
+                    <div class="progress-bar" [style.width]="getPercentage(budget)"></div>
+                  </div>
+                  <p class="percentageText">{{ getPercentage(budget) }} Spent</p>
                 </ion-label>
               </ion-item>
             </ion-card-content>
