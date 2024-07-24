@@ -43,7 +43,7 @@
       <ion-label> {{ group.date }} </ion-label>
     </ion-item-divider>
     @for (transaction of group.transactions; track $index) {
-    <ion-item>
+    <ion-item (click)="editTransaction(transaction)">
       <ion-label class="transaction-information-label">
         <h2>{{ truncateDescription(transaction.description, 20) }}</h2>
         <p>{{ getWalletNameById(transaction.walletId) }}</p>
