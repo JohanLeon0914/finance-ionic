@@ -42,6 +42,10 @@
                     <div class="progress-bar" [style.width]="getPercentage(budget)"></div>
                   </div>
                   <p class="percentageText">{{ getPercentage(budget) }} Spent</p>
+                  <div class="tag" [ngClass]="{'repetitive': budget.repeat !== 'NEVER', 'non-repetitive': budget.repeat === 'NEVER'}">
+                    <ion-icon [name]="budget.repeat !== 'NEVER' ? 'repeat' : 'remove-circle'"></ion-icon>
+                    <span>{{ budget.repeat !== 'NEVER' ? 'Repetitive' : 'Non-Repetitive' }}</span>
+                  </div>
                 </ion-label>
               </ion-item>
             </ion-card-content>
