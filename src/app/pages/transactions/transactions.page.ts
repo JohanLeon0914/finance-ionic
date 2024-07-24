@@ -133,6 +133,9 @@ export class TransactionsPage implements OnInit {
 
   
   getCategoryById(categoryId: string | number): Category | undefined {
+    if(!categoryId) {
+      return undefined;
+    }
     if (this.categoryCache.has(categoryId)) {
       return this.categoryCache.get(categoryId)!;
     } else {
