@@ -7,7 +7,7 @@ import { UtilService } from 'src/app/services/utils.service';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { addIcons } from 'ionicons';
-import { alertCircleOutline, calendarClearOutline, checkmarkCircleOutline, closeCircleOutline, pencilOutline, pricetagOutline, trashOutline } from 'ionicons/icons';
+import { alertCircleOutline, calendarClearOutline, checkmarkCircleOutline, closeCircleOutline, pencilOutline, pricetagOutline, removeCircle, repeat, trashOutline } from 'ionicons/icons';
 import { BudgetService } from 'src/app/services/budget.service';
 import { Budget } from 'src/models/budget.model';
 import { HeaderComponent } from 'src/app/shared/components/header/header.component';
@@ -60,7 +60,7 @@ export class BudgetsPage implements OnInit {
   categoriesIds: string[] = [];
 
   constructor() {
-    addIcons({ pricetagOutline, closeCircleOutline, checkmarkCircleOutline, alertCircleOutline, pencilOutline, trashOutline, calendarClearOutline })
+    addIcons({ repeat, removeCircle, pricetagOutline, closeCircleOutline, checkmarkCircleOutline, alertCircleOutline, pencilOutline, trashOutline, calendarClearOutline })
   }
 
   currencyFormatter(value: number) {

@@ -62,3 +62,25 @@ ion-card:hover {
   text-align: center;
   font-size: 0.9em;
 }
+
+.tag {
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.tag ion-icon {
+  margin-right: 5px;
+}
+
+.repetitive {
+  background-color: #28a745;
+  color: white;
+}
+
+.non-repetitive {
+  background-color: #dc3545;
+  color: white;
+}
